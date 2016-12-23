@@ -1,0 +1,113 @@
+
+
+#serialTerminalScreen{
+    -fx-background-color: #00b400;
+    -fx-text-fill: #00b400;
+    -fx-font-size: 12px;
+}
+
+.text-area .content {
+    -fx-background-color: rgba(255, 255, 255, 0.02);
+
+}
+.button {
+    /*-fx-padding: 5 22 5 22;*/
+    /*-fx-border-color: #a0a0a0;*/
+    /*-fx-border-width: 2;*/
+    -fx-background-radius: 0;
+    /*-fx-background-color: #dadada;*/
+    /*-fx-font-family: Arial, Helvetica, sans-serif;*/
+    /*-fx-font-size: 11pt;*/
+    /*-fx-text-fill: #070707;*/
+    /*-fx-background-insets: 0 0 0 0, 0, 1, 2;*/
+}
+
+.toggle-button{
+    -fx-background-radius: 0;
+}
+
+.split-panel-anchor{
+    /*-fx-border-color: black;*/
+}
+.tetstttt{
+    -fx-background-color: rgb(225, 89, 67);
+}
+
+.btn-setting{
+    -fx-background-color: rgb(230, 230, 230);
+}
+
+.btn-setting:hover{
+    -fx-background-color: rgb(212, 212, 212);
+}
+
+.tf-name-panel {
+    -fx-background-color: rgb(225, 225, 225);
+}
+
+.btn-close-panel {
+    -fx-background-color: rgb(225, 225, 225);
+}
+
+.btn-close-panel:hover {
+    -fx-background-color: rgb(212, 212, 212);
+}
+
+.menu-panel {
+    -fx-background-color: rgb(225, 225, 225);
+}
+
+.null {
+}
+
+.menu-journal{
+    -fx-background-color: rgb(225, 225, 225);
+
+}
+
+.btn-close-journal {
+    -fx-background-color: rgb(225, 225, 225);
+}
+
+.btn-close-journal:hover {
+    -fx-background-color: rgb(212, 212, 212);
+}
+
+
+/*.menu-item {*/
+    /*-fx-background-color: rgb(225, 225, 225);*/
+    /*-fx-text-fill: black;*/
+    /*-fx-skin: inherit;*/
+/*}*/
+
+/*.menu-item:hover .label{*/
+    /*-fx-background-color: rgb(200, 200, 200);*/
+    /*-fx-text-fill: black;*/
+/*}*/
+
+/*.menu-item:focused .label {*/
+    /*-fx-background-color: rgb(200, 200, 200);*/
+    /*-fx-text-fill: black;*/
+/*}*/
+
+/*.radio-menu-item{*/
+    /*-fx-background-color: rgb(225, 225, 225);*/
+    /*-fx-text-fill: black;*/
+    /*-fx-skin: inherit;*/
+/*}*/
+
+
+/*.menu-bar{*/
+    /*-fx-background-color: rgb(230, 230, 230);*/
+    /*-fx-border-color: rgb(212, 212, 212);*/
+/*}*/
+
+/*.menu {*/
+    /*-fx-background-color: rgb(230, 230, 230);*/
+    /*-fx-text-fill: black;*/
+/*}*/
+
+/*.menu:hover .label{*/
+    /*-fx-background-color: rgb(200, 200, 200);*/
+    /*-fx-text-fill: black;*/
+/*}*/

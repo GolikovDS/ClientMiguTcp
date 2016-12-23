@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.net.URL?>
+<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<GridPane alignment="CENTER" hgap="10.0" prefHeight="677.0" prefWidth="1323.0" style="-fx-background-color: rgb(230, 230, 230);" vgap="10.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ru.artsok.controller.Controller">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+  <SplitPane fx:id="spGorizont" dividerPositions="0.7715654952076677" focusTraversable="true" orientation="VERTICAL" prefHeight="-1.0" prefWidth="-1.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+    <AnchorPane fx:id="panelAll" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: rgb(212, 212, 212);">
+      <SplitPane fx:id="spTop" blendMode="SRC_OVER" cache="true" cacheHint="DEFAULT" depthTest="INHERIT" dividerPositions="0.1780929866036249" focusTraversable="true" minHeight="50.0" mouseTransparent="false" pickOnBounds="false" prefHeight="229.0" prefWidth="1321.0" styleClass="null" visible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
+        <AnchorPane fx:id="settingPanelMigu" disable="false" focusTraversable="false" minHeight="0.0" minWidth="0.0" pickOnBounds="true" prefHeight="351.0" prefWidth="127.0" styleClass="split-panel-anchor" visible="true">
+          <GridPane id="settingPanel" maxHeight="-1.0" maxWidth="-1.0" minHeight="-1.0" minWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" style="&#10;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <columnConstraints>
+              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <GridPane maxHeight="25.0" minHeight="25.0" prefHeight="438.0" prefWidth="232.0" styleClass="menu-panel" GridPane.columnIndex="0" GridPane.rowIndex="0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <Button maxHeight="24.0" minHeight="24.0" mnemonicParsing="false" onMouseClicked="#onClickCloseSettingPanel" prefHeight="24.0" styleClass="btn-close-panel" text="Скрыть" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="0" GridPane.valignment="TOP" />
+              <TextField disable="true" opacity="1.0" prefWidth="200.0" styleClass="tf-name-panel" text="МИЖУ" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+            <rowConstraints>
+              <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
+              <RowConstraints maxHeight="25.0" minHeight="25.0" percentHeight="-1.0" prefHeight="25.0" vgrow="SOMETIMES" />
+              <RowConstraints maxHeight="-1.0" minHeight="-1.0" prefHeight="-1.0" valignment="CENTER" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <GridPane maxHeight="25.0" maxWidth="-1.0" minHeight="25.0" minWidth="-1.0" prefHeight="25.0" prefWidth="-1.0" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="144.0" minWidth="10.0" prefWidth="10.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="87.0" minWidth="10.0" prefWidth="20.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="72.0" minWidth="0.0" prefWidth="0.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+              <GridPane.margin>
+                <Insets />
+              </GridPane.margin>
+              <Button contentDisplay="CENTER" maxHeight="25.0" maxWidth="25.0" minHeight="25.0" minWidth="25.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="+" textAlignment="CENTER" textFill="#396600" textOverrun="CLIP" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.rowIndex="0" GridPane.valignment="CENTER">
+                <font>
+                  <Font size="10.0" />
+                </font>
+                <GridPane.margin>
+                  <Insets />
+                </GridPane.margin>
+              </Button>
+              <Button maxHeight="25.0" maxWidth="25.0" minHeight="25.0" minWidth="25.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="-" textAlignment="CENTER" textFill="#ff3d00" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.rowIndex="0" GridPane.valignment="CENTER">
+                <GridPane.margin>
+                  <Insets left="25.0" />
+                </GridPane.margin>
+              </Button>
+            </GridPane>
+            <GridPane GridPane.columnIndex="0" GridPane.rowIndex="2">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+              <TreeView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            </GridPane>
+          </GridPane>
+        </AnchorPane>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="" visible="false">
+          <Button mnemonicParsing="false" onAction="#onClickCloseJournal" onMouseClicked="#onClickCloseJournalPanel" prefHeight="24.0" styleClass="btn-close-panel" text="Скрыть" AnchorPane.rightAnchor="490.0" AnchorPane.topAnchor="128.0" />
+          <TextField disable="true" opacity="1.0" prefHeight="25.0" prefWidth="1271.0" styleClass="tf-name-panel" text="Журнал текущих событий" AnchorPane.leftAnchor="-115.0" AnchorPane.rightAnchor="-116.0" AnchorPane.topAnchor="127.0" />
+        </AnchorPane>
+      </SplitPane>
+    </AnchorPane>
+    <AnchorPane fx:id="panelJournal" disable="false" minHeight="-1.0" minWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" visible="true">
+      <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="67.0" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="122.0" minHeight="10.0" prefHeight="114.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+      </GridPane>
+    </AnchorPane>
+    <GridPane.margin>
+      <Insets bottom="25.0" left="25.0" right="25.0" top="24.0" />
+    </GridPane.margin>
+  </SplitPane>
+  <MenuBar GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="TOP">
+    <GridPane.margin>
+      <Insets />
+    </GridPane.margin>
+    <Menu mnemonicParsing="false" text="File">
+      <MenuItem mnemonicParsing="false" text="Close" />
+    </Menu>
+    <Menu mnemonicParsing="false" text="Edit">
+      <MenuItem mnemonicParsing="false" text="Delete" />
+    </Menu>
+    <Menu mnemonicParsing="false" text="Help">
+      <MenuItem mnemonicParsing="false" text="About" />
+    </Menu>
+  </MenuBar>
+  <GridPane maxWidth="25.0" minWidth="25.0" prefWidth="25.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+    <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    </columnConstraints>
+    <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    </rowConstraints>
+    <GridPane.margin>
+      <Insets top="49.0" />
+    </GridPane.margin>
+    <Button maxHeight="23.0" maxWidth="-1.0" minHeight="23.0" minWidth="100.0" mnemonicParsing="false" onAction="#onClickBtnOpenMiguSetting" rotate="270.0" styleClass="btn-setting" text="МИЖУ" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" GridPane.valignment="TOP">
+      <GridPane.margin>
+        <Insets left="-1.0" top="39.0" />
+      </GridPane.margin>
+    </Button>
+    <Button maxHeight="23.0" maxWidth="-1.0" minHeight="23.0" minWidth="100.0" mnemonicParsing="false" rotate="270.0" styleClass="btn-setting" text="RS-485" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="TOP">
+      <GridPane.margin>
+        <Insets left="-1.0" top="139.0" />
+      </GridPane.margin>
+    </Button>
+    <Button maxHeight="23.0" maxWidth="-1.0" minHeight="23.0" minWidth="100.0" mnemonicParsing="false" rotate="270.0" styleClass="btn-setting" text="TCP/IP" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="TOP">
+      <GridPane.margin>
+        <Insets left="-1.0" top="239.0" />
+      </GridPane.margin>
+    </Button>
+  </GridPane>
+  <stylesheets>
+    <URL value="@../resources/css/main.css" />
+  </stylesheets>
+  <GridPane maxHeight="27.0" maxWidth="-1.0" minHeight="25.0" style="    -fx-background-color: rgb(225, 225, 225);&#10;&#10;" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.valignment="BOTTOM">
+    <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    </columnConstraints>
+    <Button maxHeight="23.0" minHeight="23.0" minWidth="100.0" mnemonicParsing="false" onAction="#onClickCloseJournalPanel" prefHeight="23.0" styleClass="btn-close-panel" text="Журнал" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.valignment="TOP">
+      <GridPane.margin>
+        <Insets bottom="1.0" left="25.0" />
+      </GridPane.margin>
+    </Button>
+    <padding>
+      <Insets />
+    </padding>
+    <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    </rowConstraints>
+  </GridPane>
+</GridPane>
