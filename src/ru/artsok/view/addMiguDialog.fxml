@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="267.0" prefWidth="402.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ru.artsok.controller.AddMiguController">
+  <children>
+    <GridPane layoutX="0.0" layoutY="0.0" prefHeight="267.0" prefWidth="377.0">
+      <children>
+        <GridPane GridPane.columnIndex="3" GridPane.rowIndex="6">
+          <children>
+            <Button mnemonicParsing="false" onAction="#okDialogBtnClick" prefHeight="28.0" prefWidth="101.0" text="ОК" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <Button mnemonicParsing="false" onAction="#cancelDialogBtnClick" prefHeight="28.0" prefWidth="101.0" text="Отмена" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+          </children>
+          <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          </columnConstraints>
+          <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          </rowConstraints>
+        </GridPane>
+        <Label text="Адрес в сети RS-485" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+        <Label text="Заводской номер" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+        <Label text="Тип" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+        <Label text="Примечание" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+        <TextField fx:id="addressInRS485" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+        <TextField fx:id="number" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+        <TextField fx:id="node" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+        <Label fx:id="errorLabel" text="Незаполнены обязательные поля" textFill="RED" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+        <ComboBox fx:id="type" prefWidth="200.0" promptText="5/2.2" GridPane.columnIndex="3" GridPane.rowIndex="3">
+          <items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="Item 1" />
+              <String fx:value="Item 2" />
+              <String fx:value="Item 3" />
+            </FXCollections>
+          </items>
+        </ComboBox>
+      </children>
+      <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="196.0" minWidth="10.0" prefWidth="15.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="196.0" minWidth="10.0" prefWidth="117.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="132.0" minWidth="10.0" prefWidth="14.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="277.0" minWidth="10.0" prefWidth="222.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="218.0" minWidth="7.0" prefWidth="9.0" />
+      </columnConstraints>
+      <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+    </GridPane>
+  </children>
+</AnchorPane>

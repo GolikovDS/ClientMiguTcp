@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" >
+<html>
+<head>
+<title>No Script - Loading pages without JavaScript</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src="tabs.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="tabs.css" />
+<style>
+
+body
+{ 
+    margin: 48px; 
+    font-size:100%;
+    font-family: arial, sans;
+    background-color: #FFF;
+}
+
+.legal
+{
+    text-align:center;
+    font-size: 80%;
+    color: #666;
+}
+
+</style>
+
+
+
+</head>
+
+
+<body>
+<div id="content">
+
+<h1>No Script - Loading pages without JavaScript</h1>
+<p>  The tabs work without JavaScript with pages that incorporate  the Tab Panel and use it as a menu, for a website for example. <br />
+  The tab for the current page has the class &quot;selected&quot; to highlight the active tab. <br />
+  In this example, the &quot;selected&quot; class is associated with the   No Script tab:</p>
+<pre>&lt;li&gt;&lt;a href=&quot;tab-noscript.html&quot; class=&quot;selected&quot;&gt;No Script&lt;/a&gt;&lt;/li&gt;</pre>
+<p>&nbsp; </p>
+<div id="tabs">
+<ul>
+     <li><a href="#" rel="tab-css.html"  onclick="loadit(this)">CSS</a></li>
+     <li><a href="#" rel="tab-dom.html" onClick="loadit(this)">DOM</a></li>
+     <li><a href="#" rel="tab-javascript.html" onClick="loadit(this)">JavaScript</a></li>
+     <li><a href="tab-noscript.html" class="selected">No Script</a></li>
+</ul>
+<iframe id="container"></iframe>
+</div>
+
+
+<p><br>
+  Return to the  tutorial: <a href="tabs.php" target="_parent">Tab Panel without  framework</a>.<br>
+</p>
+<div class="legal">(c) 2009 <a href="http://www.xul.fr/javascript/" target="_parent" >Xul.fr</a>. 
+      All rights reserved. <br />
+Permission is granted to print this page and the code of the scripts and 
+      to use freely the code.<br />
+Don't display this page and the code on another website.</div>
+    
+</div>
+</body>
+</html>

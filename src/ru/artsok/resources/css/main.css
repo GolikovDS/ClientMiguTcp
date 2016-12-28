@@ -1,6 +1,5 @@
 
-
-#serialTerminalScreen{
+#serialTerminalScreen {
     -fx-background-color: #00b400;
     -fx-text-fill: #00b400;
     -fx-font-size: 12px;
@@ -10,11 +9,13 @@
     -fx-background-color: rgba(255, 255, 255, 0.02);
 
 }
+
 .button {
     /*-fx-padding: 5 22 5 22;*/
     /*-fx-border-color: #a0a0a0;*/
     /*-fx-border-width: 2;*/
     -fx-background-radius: 0;
+
     /*-fx-background-color: #dadada;*/
     /*-fx-font-family: Arial, Helvetica, sans-serif;*/
     /*-fx-font-size: 11pt;*/
@@ -22,22 +23,23 @@
     /*-fx-background-insets: 0 0 0 0, 0, 1, 2;*/
 }
 
-.toggle-button{
+.toggle-button {
     -fx-background-radius: 0;
 }
 
-.split-panel-anchor{
+.split-panel-anchor {
     /*-fx-border-color: black;*/
 }
-.tetstttt{
-    -fx-background-color: rgb(225, 89, 67);
+
+.tetstttt {
+    -fx-background-color: rgba(23, 0, 62, 0.75);
 }
 
-.btn-setting{
+.btn-setting {
     -fx-background-color: rgb(230, 230, 230);
 }
 
-.btn-setting:hover{
+.btn-setting:hover {
     -fx-background-color: rgb(212, 212, 212);
 }
 
@@ -60,7 +62,7 @@
 .null {
 }
 
-.menu-journal{
+.menu-journal {
     -fx-background-color: rgb(225, 225, 225);
 
 }
@@ -73,41 +75,53 @@
     -fx-background-color: rgb(212, 212, 212);
 }
 
-
 /*.menu-item {*/
-    /*-fx-background-color: rgb(225, 225, 225);*/
-    /*-fx-text-fill: black;*/
-    /*-fx-skin: inherit;*/
+/*-fx-background-color: rgb(225, 225, 225);*/
+/*-fx-text-fill: black;*/
+/*-fx-skin: inherit;*/
 /*}*/
 
 /*.menu-item:hover .label{*/
-    /*-fx-background-color: rgb(200, 200, 200);*/
-    /*-fx-text-fill: black;*/
+/*-fx-background-color: rgb(200, 200, 200);*/
+/*-fx-text-fill: black;*/
 /*}*/
 
 /*.menu-item:focused .label {*/
-    /*-fx-background-color: rgb(200, 200, 200);*/
-    /*-fx-text-fill: black;*/
+/*-fx-background-color: rgb(200, 200, 200);*/
+/*-fx-text-fill: black;*/
 /*}*/
 
 /*.radio-menu-item{*/
-    /*-fx-background-color: rgb(225, 225, 225);*/
-    /*-fx-text-fill: black;*/
-    /*-fx-skin: inherit;*/
+/*-fx-background-color: rgb(225, 225, 225);*/
+/*-fx-text-fill: black;*/
+/*-fx-skin: inherit;*/
 /*}*/
 
-
 /*.menu-bar{*/
-    /*-fx-background-color: rgb(230, 230, 230);*/
-    /*-fx-border-color: rgb(212, 212, 212);*/
+/*-fx-background-color: rgb(230, 230, 230);*/
+/*-fx-border-color: rgb(212, 212, 212);*/
 /*}*/
 
 /*.menu {*/
-    /*-fx-background-color: rgb(230, 230, 230);*/
-    /*-fx-text-fill: black;*/
+/*-fx-background-color: rgb(230, 230, 230);*/
+/*-fx-text-fill: black;*/
 /*}*/
 
 /*.menu:hover .label{*/
-    /*-fx-background-color: rgb(200, 200, 200);*/
-    /*-fx-text-fill: black;*/
+/*-fx-background-color: rgb(200, 200, 200);*/
+/*-fx-text-fill: black;*/
 /*}*/
+
+.com-terminal {
+    -fx-background-color: #00b400;
+    -fx-text-fill: #00b400;
+    -fx-font-size: 12px;
+}
+
+.btn-migu-add {
+    -fx-background-color: rgb(244, 244, 244);
+}
+
+.btn-migu-add:hover {
+    -fx-background-color: rgb(230, 230, 230);
+}

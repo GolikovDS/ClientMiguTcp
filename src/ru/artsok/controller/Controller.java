@@ -7,12 +7,17 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioMenuItem;
-import javafx.scene.control.SplitPane;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.web.WebView;
 import javafx.stage.WindowEvent;
+import ru.artsok.Main;
+import ru.artsok.entity.Migu;
+import ru.artsok.entity.MiguImpl;
+import ru.artsok.util.impl.ParserJaxbImpl;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -20,7 +25,7 @@ import java.net.URL;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
-import static ru.artsok.controller.SettingMainController.*;
+import static ru.artsok.SettingMainController.*;
 
 public class Controller implements Initializable, EventHandler<WindowEvent> {
 
@@ -42,10 +47,23 @@ public class Controller implements Initializable, EventHandler<WindowEvent> {
     public GridPane gridPanelMigu;
     public GridPane gridPanelRs;
     public GridPane gridPanelTcp;
+    public ImageView imageCloseBtnM;
+    public ImageView imageCloseBtnR;
+    public ImageView imageCloseBtnT;
+    public TextArea serialTerminalScreen;
+    public ImageView imageCloseBtnDown;
+    public Button btnAddMiguInPanel;
+    public Button removeMiguFroPanel;
+    public ImageView imageBtnAddMiguPanel;
+    public ImageView imageBtnRemoveMiguPanel;
+    public TreeView<String> treeMigu;
+    public WebView web;
 
 
+    public static Migu miguBuffer = new Migu();
     private int btnLeftPanelIsChoice;
     private GridPane[] gridPanelsLeft;
+    TreeItem<String> rootMigu = new TreeItem<String>("Устройства");
 
 
     @Override
@@ -58,9 +76,8 @@ public class Controller implements Initializable, EventHandler<WindowEvent> {
 
 
         new Thread(() -> {
-
             try {
-                Thread.sleep(500);
+                Thread.sleep(1000);
                 spGorizont.setDividerPosition(0, journalPanelIsSize);
                 spTop.setDividerPosition(0, settingPanelSize);
 
@@ -76,12 +93,45 @@ public class Controller implements Initializable, EventHandler<WindowEvent> {
                     spTop.setDisable(false);
                 }
 
-
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
         }).start();
+
+        /////////////////////////////////////////////////////////////////////////////////////
+        //Image button*//////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////
+
+        Image image = new Image("/ru/artsok/resources/icon/close1.png");
+        imageCloseBtnM.setImage(image);
+        imageCloseBtnR.setImage(image);
+        imageCloseBtnT.setImage(image);
+        imageCloseBtnDown.setImage(new Image("/ru/artsok/resources/icon/close2.png"));
+        imageBtnAddMiguPanel.setImage(new Image("/ru/artsok/resources/icon/plus.png"));
+        imageBtnRemoveMiguPanel.setImage(new Image("/ru/artsok/resources/icon/minus.png"));
+
+        //////////////////////////////////////////////////////////////////////////////////////
+
+        //////////////////////////////////////////////////////////////////////////////////////
+        //WEB
+        //////////////////////////////////////////////////////////////////////////////////////
+
+//        new Thread(() -> {
+//            try {
+//                Thread.sleep(1200);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//
+//        });
+//
+//        WebEngine engine = web.getEngine();
+//        engine.load("http://yandex.ru");
+//        engine.loadContent(new ReaderFiles().read("http://yandex.ru"));
+
+        //////////////////////////////////////////////////////////////////////////////////////
+
 
         DoubleProperty doubleProperty = spGorizont.getDividers().get(0).positionProperty();
         doubleProperty.addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
@@ -186,7 +236,7 @@ public class Controller implements Initializable, EventHandler<WindowEvent> {
 
 
     public void onClickCloseJournal(ActionEvent actionEvent) { //кнопка панели
-        spGorizont.setDisable(true);
+//        spGorizont.setDisable(true);
         journalPanelIsSize = spGorizont.getDividerPositions()[0];
         journalPanelIsClose = true;
         spGorizont.setDividerPosition(0, 1);
@@ -262,6 +312,7 @@ public class Controller implements Initializable, EventHandler<WindowEvent> {
     public void handle(WindowEvent event) {
         if (event.getEventType() == WindowEvent.WINDOW_CLOSE_REQUEST) {
             try {
+                new ParserJaxbImpl().setMigu(new Migu());
                 Properties properties = new Properties();
                 if (journalPanelIsClose) {
                     properties.setProperty("horizontal", String.valueOf(journalPanelIsSize));
@@ -285,7 +336,6 @@ public class Controller implements Initializable, EventHandler<WindowEvent> {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
     }
 
@@ -313,11 +363,15 @@ public class Controller implements Initializable, EventHandler<WindowEvent> {
     //**********************************************************************///
     ///////////RS-485//////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
-    /*************************************************************************/
+
+    /**
+     * *********************************************************************
+     */
     ///////////////////////////////////////////////////////////////////////////
     public void onClickConnect(ActionEvent actionEvent) {
 
     }
+
 
     /////////////////////////////////////////////////////////////////////////
     //   *****  *    *   ***
@@ -325,5 +379,52 @@ public class Controller implements Initializable, EventHandler<WindowEvent> {
     ////////////////////////////////////////////////////////////////////////
 
 
+    ///////////////////////////////////////////////////////////////////////////
+    //**********************************************************************///
+    ///////////MIGU//////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+
+    public void addMiguInPanel(ActionEvent actionEvent) {
+        Main.showAddMiguDialog();
+        showMiguOnPanel(miguBuffer);
+    }
+
+
+    public void removeMiguInPanel(ActionEvent actionEvent) {
+        TreeItem<String> item = treeMigu.getSelectionModel().getSelectedItem();
+        if (item.getValue().contains("МИЖУ зав. №")) {
+            TreeItem<String> parent = item.getParent();
+            parent.getChildren().remove(item);
+            new MiguImpl().removeMiguByNameTreeView(item.getValue());
+        }
+    }
+
+    public void showMiguOnPanel(Migu migu) {
+        MiguImpl miguImpl = new MiguImpl(migu);
+        if (migu != null && AddMiguController.isOkClick) {
+            rootMigu.getChildren().add(miguImpl.item());
+            treeMigu.setRoot(rootMigu);
+            rootMigu.setExpanded(true);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    //**********************************************************************///
+    ///////////ADD MIGU DIALOG/////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+
+
+    ///////////////////////////////////////////////////////////////////////
+
 
 }
+
+
+///////////////////////////////////////////////////////////////////////////////
+//NODE/////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+//TREEVIEW image change
+//itemMigu=treeMigu.getSelectionModel().getSelectedItem();
+//        System.out.println(itemMigu.getValue().getName());
+//        itemMigu=treeMigu.getTreeItem(1);
+//        itemMigu.setGraphic(new ImageView(new Image("ru/artsok/resources/icon/plus.png")));
