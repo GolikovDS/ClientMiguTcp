@@ -12,13 +12,13 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.web.*?>
 
-<GridPane alignment="CENTER" hgap="10.0" minHeight="300.0" minWidth="250.0" prefHeight="677.0" prefWidth="1323.0" style="-fx-background-color: rgb(230, 230, 230);" vgap="10.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ru.artsok.controller.Controller">
+<GridPane alignment="CENTER" hgap="10.0" minHeight="300.0" minWidth="250.0" prefHeight="677.0" prefWidth="1000.0" style="-fx-background-color: rgb(230, 230, 230);" vgap="10.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ru.artsok.controller.Controller">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
   </columnConstraints>
   <SplitPane fx:id="spGorizont" disable="true" dividerPositions="0.904" focusTraversable="true" minHeight="250.0" minWidth="300.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
     <AnchorPane fx:id="panelAll" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: rgb(212, 212, 212);">
-      <SplitPane fx:id="spTop" blendMode="SRC_OVER" cache="true" cacheHint="DEFAULT" depthTest="INHERIT" dividerPositions="0.10007880220646179" focusTraversable="true" minHeight="50.0" mouseTransparent="false" pickOnBounds="false" prefHeight="229.0" prefWidth="1321.0" visible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+      <SplitPane fx:id="spTop" blendMode="SRC_OVER" cache="true" cacheHint="DEFAULT" depthTest="INHERIT" dividerPositions="0.4682875264270613" focusTraversable="true" minHeight="50.0" mouseTransparent="false" pickOnBounds="false" prefHeight="229.0" prefWidth="1321.0" visible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
         <AnchorPane fx:id="settingPanelMigu" disable="false" focusTraversable="false" minHeight="0.0" minWidth="0.0" pickOnBounds="true" prefHeight="351.0" prefWidth="127.0" styleClass="split-panel-anchor" visible="true">
           <GridPane fx:id="gridPanelMigu" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <GridPane id="settingPanel" maxHeight="-1.0" maxWidth="-1.0" minHeight="-1.0" minWidth="-1.0" prefHeight="60.0" prefWidth="-1.0" style="&#10;" GridPane.columnIndex="0" GridPane.rowIndex="0">
@@ -120,36 +120,18 @@
                   </GridPane.margin>
                 </Label>
               </GridPane>
-              <CheckBox mnemonicParsing="false" text="Подключаться автоматически" GridPane.columnIndex="0" GridPane.rowIndex="7">
+              <ImageView fx:id="imageSerialPort" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+              <ToggleButton fx:id="btnStartSerialPort" maxWidth="80.0" minWidth="80.0" mnemonicParsing="false" onAction="#onClickStartSerialPort" text="Старт" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+              <CheckBox fx:id="checkAvtoSerialPort" mnemonicParsing="false" text="Подключаться автоматически" GridPane.columnIndex="0" GridPane.rowIndex="7">
                 <GridPane.margin>
                   <Insets left="100.0" fx:id="x2" />
                 </GridPane.margin>
               </CheckBox>
-              <Button maxHeight="30.0" maxWidth="80.0" minHeight="30.0" minWidth="80.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" text="Старт" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+              <Label opacity="1.0" text="Порт" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                 <GridPane.margin>
                   <Insets left="10.0" fx:id="x1" />
                 </GridPane.margin>
-              </Button>
-              <ChoiceBox GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-                <FXCollections fx:factory="observableArrayList">
-                  <String fx:value="Item 1" />
-                  <String fx:value="Item 2" />
-                  <String fx:value="Item 3" />
-                </FXCollections>
-                <GridPane.margin>
-                  <Insets left="100.0" fx:id="x2" />
-                </GridPane.margin>
-              </ChoiceBox>
-              <Label opacity="1.0" text="Порт" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.margin="$x1" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-              <Label opacity="1.0" text="Бит в секунду" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.margin="$x1" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-              <ChoiceBox GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.margin="$x2" GridPane.rowIndex="4" GridPane.valignment="CENTER">
-                <FXCollections fx:factory="observableArrayList">
-                  <String fx:value="Item 1" />
-                  <String fx:value="Item 2" />
-                  <String fx:value="Item 3" />
-                </FXCollections>
-              </ChoiceBox>
-              <Label opacity="1.0" text="Бит данных" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.margin="$x1" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+              </Label>
               <rowConstraints>
                 <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="80.0" minHeight="80.0" prefHeight="80.0" vgrow="SOMETIMES" />
@@ -160,32 +142,61 @@
                 <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
-              <ChoiceBox GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.margin="$x2" GridPane.rowIndex="3" GridPane.valignment="CENTER">
-                <FXCollections fx:factory="observableArrayList">
-                  <String fx:value="Item 1" />
-                  <String fx:value="Item 2" />
-                  <String fx:value="Item 3" />
-                </FXCollections>
-              </ChoiceBox>
               <GridPane.margin>
                 <Insets />
               </GridPane.margin>
-              <ChoiceBox GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.margin="$x2" GridPane.rowIndex="5" GridPane.valignment="CENTER">
-                <FXCollections fx:factory="observableArrayList">
-                  <String fx:value="Item 1" />
-                  <String fx:value="Item 2" />
-                  <String fx:value="Item 3" />
-                </FXCollections>
-              </ChoiceBox>
+              <ComboBox fx:id="cbSeriatPortNames" maxWidth="85.0" minWidth="85.0" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                <items>
+                  <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="Item 1" />
+                    <String fx:value="Item 2" />
+                    <String fx:value="Item 3" />
+                  </FXCollections>
+                </items>
+                <GridPane.margin>
+                  <Insets left="120.0" fx:id="x3" />
+                </GridPane.margin>
+              </ComboBox>
+              <Label opacity="1.0" text="Бит в секунду" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.margin="$x1" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+              <Label opacity="1.0" text="Бит данных" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.margin="$x1" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
               <Label opacity="1.0" text="Четность" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.margin="$x1" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
               <Label opacity="1.0" text="Стоповые биты" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.margin="$x1" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
-              <ChoiceBox GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.margin="$x2" GridPane.rowIndex="6" GridPane.valignment="CENTER">
-                <FXCollections fx:factory="observableArrayList">
-                  <String fx:value="Item 1" />
-                  <String fx:value="Item 2" />
-                  <String fx:value="Item 3" />
-                </FXCollections>
-              </ChoiceBox>
+              <ComboBox id="cbSeriatPortBitData" fx:id="cbSeriatPortBitInSekond" maxWidth="85.0" minWidth="85.0" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.margin="$x3" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                <items>
+                  <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="Item 1" />
+                    <String fx:value="Item 2" />
+                    <String fx:value="Item 3" />
+                  </FXCollections>
+                </items>
+              </ComboBox>
+              <ComboBox fx:id="cbSeriatPortBitData" maxWidth="85.0" minWidth="85.0" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.margin="$x3" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                <items>
+                  <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="Item 1" />
+                    <String fx:value="Item 2" />
+                    <String fx:value="Item 3" />
+                  </FXCollections>
+                </items>
+              </ComboBox>
+              <ComboBox fx:id="cbSeriatPortStopBit" maxWidth="85.0" minWidth="85.0" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.margin="$x3" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                <items>
+                  <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="Item 1" />
+                    <String fx:value="Item 2" />
+                    <String fx:value="Item 3" />
+                  </FXCollections>
+                </items>
+              </ComboBox>
+              <ComboBox fx:id="cbSeriatPortChetnost" maxWidth="85.0" minWidth="85.0" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.margin="$x3" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+                <items>
+                  <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="Item 1" />
+                    <String fx:value="Item 2" />
+                    <String fx:value="Item 3" />
+                  </FXCollections>
+                </items>
+              </ComboBox>
             </GridPane>
             <TextArea fx:id="serialTerminalScreen" maxHeight="400.0" maxWidth="500.0" prefWidth="-1.0" style="&#10;" styleClass="com-terminal" wrapText="true" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
               <GridPane.margin>
@@ -228,14 +239,19 @@
                 <Insets />
               </GridPane.margin>
             </GridPane>
+            <ImageView fx:id="imageTspSetting" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.rowIndex="0" GridPane.valignment="TOP">
+              <GridPane.margin>
+                <Insets top="25.0" />
+              </GridPane.margin>
+            </ImageView>
             <TextField maxWidth="400.0" opacity="1.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.rowIndex="0" GridPane.valignment="TOP">
               <GridPane.margin>
-                <Insets left="10.0" top="70.0" />
+                <Insets left="10.0" top="150.0" />
               </GridPane.margin>
             </TextField>
             <Label opacity="1.0" text="Имя сервера" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.rowIndex="0" GridPane.valignment="TOP">
               <GridPane.margin>
-                <Insets left="10.0" top="50.0" />
+                <Insets left="10.0" top="120.0" />
               </GridPane.margin>
             </Label>
             <columnConstraints>
@@ -246,23 +262,7 @@
             </rowConstraints>
           </GridPane>
         </AnchorPane>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="535.0" prefWidth="967.0" style="" styleClass="split-panel-anchor" visible="true">
-          <children>
-            <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-              <tabs>
-                <Tab text="Untitled Tab 1">
-                  <content>
-                    <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                      <children>
-                        <WebView fx:id="web" prefHeight="535.0" prefWidth="908.0" AnchorPane.bottomAnchor="-16.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-15.0" />
-                      </children>
-                    </AnchorPane>
-                  </content>
-                </Tab>
-              </tabs>
-            </TabPane>
-          </children>
-        </AnchorPane>
+        <AnchorPane fx:id="leftAnchorPanel" minHeight="200.0" minWidth="500.0" prefHeight="535.0" prefWidth="967.0" style="" styleClass="split-panel-anchor" visible="true" />
       </SplitPane>
     </AnchorPane>
     <AnchorPane fx:id="panelJournal" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
@@ -363,6 +363,9 @@
     <rowConstraints>
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     </rowConstraints>
+    <GridPane.margin>
+      <Insets />
+    </GridPane.margin>
   </GridPane>
   <rowConstraints>
     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />

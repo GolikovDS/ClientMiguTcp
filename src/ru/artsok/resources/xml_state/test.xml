@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<MIGU>
+    <map>
+        <entry>
+            <key>323</key>
+            <value>
+                <address>3</address>
+                <number>323</number>
+                <type>20/2,2</type>
+                <node>666</node>
+                <states>
+                    <miguIsRespond>false</miguIsRespond>
+                </states>
+            </value>
+        </entry>
+        <entry>
+            <key>123</key>
+            <value>
+                <address>1</address>
+                <number>123</number>
+                <type>20/2,2</type>
+                <node>333</node>
+                <states>
+                    <miguIsRespond>false</miguIsRespond>
+                </states>
+            </value>
+        </entry>
+        <entry>
+            <key>444</key>
+            <value>
+                <address>4</address>
+                <number>444</number>
+                <type>20/2,2</type>
+                <node>5454</node>
+                <states>
+                    <miguIsRespond>false</miguIsRespond>
+                </states>
+            </value>
+        </entry>
+    </map>
+</MIGU>

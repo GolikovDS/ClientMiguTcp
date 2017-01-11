@@ -9,7 +9,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import ru.artsok.entity.Migu;
-import ru.artsok.entity.MiguImpl;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -23,23 +22,29 @@ public class AddMiguController implements Initializable {
     public TextField node;
     public Label errorLabel;
     public ComboBox type;
-    public static boolean isOkClick = false;
+    public boolean isOkClick = false;
+
+    public Migu getMigu() {
+        return migu;
+    }
+
+    public void setMigu(Migu migu) {
+        this.migu = migu;
+    }
+
+    private Migu migu;
 
 
     public void okDialogBtnClick(ActionEvent actionEvent) {
         try {
-            MiguImpl migu = new MiguImpl(
-                    new Migu(Integer.parseInt(addressInRS485.getText()),
-                            Integer.parseInt(number.getText()),
-                            type.getSelectionModel().getSelectedItem().toString(),
-                            node.getText()));
-            migu.putMigu();
+            setMigu(new Migu(Integer.parseInt(addressInRS485.getText()),
+                    Integer.parseInt(number.getText()),
+                    type.getSelectionModel().getSelectedItem().toString(),
+                    node.getText()));
             Stage stage = (Stage) node.getScene().getWindow();
-            Controller.miguBuffer = migu.getMigu();
             isOkClick = true;
             stage.close();
         } catch (NumberFormatException e) {
-            isOkClick = false;
             errorLabel.setVisible(true);
         }
     }

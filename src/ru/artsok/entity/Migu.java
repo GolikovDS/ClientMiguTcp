@@ -1,22 +1,19 @@
 package ru.artsok.entity;
 
 
-import javafx.scene.control.TreeItem;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement(name = "migu")
-@XmlType(propOrder = {"address", "number", "type", "node"})
+@XmlType(propOrder = {"address", "number", "type", "node", "states"})
 public class Migu {
 
     private int address;
     private int number;
     private String type;
     private String node;
-
-    TreeItem<String> rootMigu = new TreeItem<String>("Устройства");
+    private MiguState states = new MiguState();
 
     public Migu() {
 
@@ -67,6 +64,14 @@ public class Migu {
         this.address = address;
     }
 
+    public MiguState getStates() {
+        return states;
+    }
+
+    @XmlElement
+    public void setStates(MiguState states) {
+        this.states = states;
+    }
 
     @Override
     public String toString() {

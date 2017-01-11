@@ -81,15 +81,39 @@
 /*-fx-skin: inherit;*/
 /*}*/
 
-/*.menu-item:hover .label{*/
-/*-fx-background-color: rgb(200, 200, 200);*/
-/*-fx-text-fill: black;*/
-/*}*/
+.menu-item:hover {
+    -fx-background-color: rgb(200, 200, 200);
+    -fx-text-fill: black;
+}
 
-/*.menu-item:focused .label {*/
-/*-fx-background-color: rgb(200, 200, 200);*/
-/*-fx-text-fill: black;*/
-/*}*/
+.menu-button:hover {
+    -fx-background-color: rgb(200, 200, 200);
+    -fx-text-fill: black;
+}
+
+.menu-item:focused {
+    -fx-background-color: rgb(200, 200, 200);
+    -fx-text-fill: black;
+}
+
+.menu:focused {
+    -fx-background-color: rgb(200, 200, 200);
+    -fx-text-fill: black;
+}
+
+.menu-item:selected {
+    -fx-background-color: rgb(200, 200, 200);
+    -fx-border-color: rgb(212, 212, 212);
+}
+
+.menu:showing {
+    -fx-background-color: rgb(200, 200, 200);
+    -fx-text-fill: black;
+}
+
+.tree-view:selected {
+    -fx-background-color: rgb(200, 200, 200);
+}
 
 /*.radio-menu-item{*/
 /*-fx-background-color: rgb(225, 225, 225);*/
@@ -125,3 +149,5 @@
 .btn-migu-add:hover {
     -fx-background-color: rgb(230, 230, 230);
 }
+
+

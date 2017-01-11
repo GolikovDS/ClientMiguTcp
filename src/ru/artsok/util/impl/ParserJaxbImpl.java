@@ -2,6 +2,8 @@ package ru.artsok.util.impl;
 
 
 import ru.artsok.entity.Migu;
+import ru.artsok.entity.MiguMap;
+import ru.artsok.entity.interfaces.MiguHandle;
 import ru.artsok.util.ParserJaxb;
 
 import javax.xml.bind.JAXBContext;
@@ -16,27 +18,30 @@ public class ParserJaxbImpl implements ParserJaxb {
     public void setMigu(Migu migu) {
         JAXBContext context = null;
         try {
-            context = JAXBContext.newInstance(Migu.class);
+            context = JAXBContext.newInstance(MiguMap.class);
             Marshaller marshaller = context.createMarshaller();
-            marshaller.marshal(migu,new File("src/ru/artsok/resources/test.xml"));
 
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            MiguMap miguMap = new MiguMap();
+            miguMap.setMap(MiguHandle.miguMap.getMap());
+            marshaller.marshal(miguMap, new File("src/ru/artsok/resources/xml_state/test.xml"));
         } catch (JAXBException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
     public List<Migu> getMigu() {
         JAXBContext context = null;
-        List<Migu> object = null;
+        MiguMap miguMap = null;
         try {
-            context = JAXBContext.newInstance(Migu.class);
+            context = JAXBContext.newInstance(MiguMap.class);
             Unmarshaller unmarshaller = context.createUnmarshaller();
-            object = (List<Migu>) unmarshaller.unmarshal(new File("ru/artsok/resources/test.xml"));
+            miguMap = (MiguMap) unmarshaller.unmarshal(new File("src/ru/artsok/resources/xml_state/test.xml"));
+            MiguHandle.miguMap.getMap().putAll(miguMap.getMap());
         } catch (JAXBException e) {
             e.printStackTrace();
         }
-        return object;
+        return null;
     }
 }

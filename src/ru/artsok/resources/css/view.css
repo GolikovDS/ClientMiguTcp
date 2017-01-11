@@ -1,0 +1,16 @@
+.anchorPanelMain {
+    -fx-background-image: url("/ru/artsok/resources/images/migu.bmp");
+    -fx-background-repeat: stretch;
+    -fx-background-size: 100% 100%;
+    -fx-background-position: center center;
+
+    -fx-pref-width: 10%;
+    -fx-pref-height: 10%;
+
+
+}
+
+.labelPress {
+    -fx-text-fill: red;
+
+}
