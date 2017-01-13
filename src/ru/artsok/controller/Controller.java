@@ -141,6 +141,7 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
 
             spGorizont.setDisable(false);
             spTop.setDisable(false);
+
         }).start();
 
         /////////////////////////////////////////////////////////////////////////////////////
