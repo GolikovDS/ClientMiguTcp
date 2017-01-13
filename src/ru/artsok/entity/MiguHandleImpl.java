@@ -28,9 +28,9 @@ public class MiguHandleImpl implements MiguHandle {
             treeMigu.setRoot(rootMigu);
             rootMigu.setExpanded(true);
             miguMap.getMap().put(migu.getNumber(), migu);
-//            SettingMainController.miguMap.put(migu.getNumber(), migu);
         }
     }
+
 
     public void removeMiguByNumberTreeView(String number) {
         miguMap.getMap().remove(Integer.valueOf(number.substring(12)));

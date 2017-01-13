@@ -10,5 +10,6 @@ public interface MiguHandle {
     public static MiguMap miguMap = new MiguMap();
     public void view();
     public void addMigu(TreeItem<String> rootMigu,  TreeView<String> treeMigu, Migu migu);
+
     public void removeMiguByNumberTreeView(String number);
 }

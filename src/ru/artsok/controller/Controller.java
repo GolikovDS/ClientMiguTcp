@@ -29,16 +29,14 @@ import ru.artsok.SerialPort.SerialPortWrapper;
 import ru.artsok.entity.Migu;
 import ru.artsok.entity.MiguHandleImpl;
 import ru.artsok.entity.interfaces.MiguHandle;
+import ru.artsok.tcp.TcpClient;
 import ru.artsok.util.impl.ParserJaxbImpl;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static ru.artsok.SettingMainController.*;
 
@@ -87,7 +85,10 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
     public ImageView imageSerialPort;
     public ImageView imageTspSetting;
     public AnchorPane leftAnchorPanel;
-
+    public CheckBox cbAutoTcpConnect;
+    public TextField tbNameTcpServer;
+    public TabPane tabPanelViewMigu;
+    public Label DebugLabel;
 
 
     private int btnLeftPanelIsChoice;
@@ -114,7 +115,7 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
         //Делаем задержку в распределении панелий, т.к. без нее панели ставяться по умолчанию
         new Thread(() -> {
             try {
-                Thread.sleep(1000);
+                Thread.sleep(1500);
 
                 spGorizont.setDividerPosition(0, journalPanelIsSize);
                 spTop.setDividerPosition(0, settingPanelSize);
@@ -122,13 +123,13 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
                 if (journalPanelIsClose) {
                     onClickCloseJournal(new ActionEvent());
                 } else {
-                    spGorizont.setDisable(false);
+//                    spGorizont.setDisable(false);
                 }
 
                 if (settingPanelIsClose) {
                     onClickCloseSettingPanel(new ActionEvent());
                 } else {
-                    spTop.setDisable(false);
+//                    spTop.setDisable(false);
                 }
 
                 Thread.sleep(100);
@@ -138,7 +139,8 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
                 e.printStackTrace();
             }
 
-
+            spGorizont.setDisable(false);
+            spTop.setDisable(false);
         }).start();
 
         /////////////////////////////////////////////////////////////////////////////////////
@@ -168,20 +170,15 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
         doubleProperty.addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
             if (!settingPanelIsClose)
                 settingPanelSizeInListener = (double) newValue;
-
-
         });
 
         ReadOnlyDoubleProperty readOnlyDoubleProperty = leftAnchorPanel.heightProperty();
         readOnlyDoubleProperty.addListener((observable, oldValue, newValue) -> {
-            anchorPaneViewMigu.setPrefSize(leftAnchorPanel.getWidth(), leftAnchorPanel.getWidth()/2);
-//            anchorPaneViewMigu.setTopAnchor(labelPress, leftAnchorPanel.getHeight()*0.3);
+            anchorPaneViewMigu.setMinSize(leftAnchorPanel.getWidth(), leftAnchorPanel.getWidth() / 1.8);
         });
         readOnlyDoubleProperty = leftAnchorPanel.widthProperty();
         readOnlyDoubleProperty.addListener((observable, oldValue, newValue) -> {
-            anchorPaneViewMigu.setPrefSize(leftAnchorPanel.getWidth(), leftAnchorPanel.getWidth()/2);
-//            anchorPaneViewMigu.setLeftAnchor(labelPress, leftAnchorPanel.getWidth()*0.3);
-
+            anchorPaneViewMigu.setMinSize(leftAnchorPanel.getWidth(), leftAnchorPanel.getWidth() / 1.8);
         });
 
 
@@ -193,16 +190,7 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
         new ParserJaxbImpl().getMigu();
         for (Migu migu : MiguHandle.miguMap.getMap().values()) {
             miguHandle.addMigu(rootMigu, treeMigu, migu);
-//            FXMLLoader fxmlLoader = new FXMLLoader();
-//            fxmlLoader.setLocation(Main.class.getResource("view/viewMigu3.fxml"));
-//            try {
-//                HBox anchorPane = fxmlLoader.load();
-//                leftAnchorPanel.getChildren().add(anchorPane);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-
-
+            addTabMigu(migu.getNumber());
         }
 
         try {
@@ -230,20 +218,6 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
         ///////////////////////////////////////////////////////////////////////////
         //TIMER LIVE APP
         ///////////////////////////////////////////////////////////////////////////
-//        Timer timer = new Timer(true);
-//        timer.scheduleAtFixedRate(new TimerTask() {
-//            @Override
-//            public void run() {
-//
-//                for (int i = 0; i < treeMigu.getExpandedItemCount() - 1; i++) {
-//                    TreeItem treeItem = rootMigu.getChildren().get(0);
-//                    treeItem.setGraphic(new ImageView(new Image("ru/artsok/resources/icon/x.png")));
-//                    treeMigu.refresh();
-//
-//                    System.out.println("Timer tic");
-//                }
-//            }
-//        }, 1000, 1000);
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
             TreeItem treeItem;
@@ -271,31 +245,19 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
         timeline.play();
 ////////////////////////////////////////////////////////////////////////////////////
 
-        /////////////////////////////////////////
-        //
-        /////////////////////////////////////////
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(Main.class.getResource("/ru/artsok/view/viewMigu.fxml"));
-        try {
-            anchorPaneViewMigu = fxmlLoader.load();
-            Tab tab = new Tab("МИЖУ", anchorPaneViewMigu);
-            TabPane tabPane = new TabPane(tab);
-            leftAnchorPanel.getChildren().add(anchorPaneViewMigu);
-
-            anchorPaneViewMigu.setPrefSize(100, 200);
-            anchorPaneViewMigu.resize(100, 200);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
 
-        /////////////////////////////////////////
+        ////////////////////////////////////////
+        //TCP
+        ////////////////////////////////////////
 
+        tbNameTcpServer.setText("192.168.55.145");
+        ////////////////////////////////////////
         closeLeftPanel(1);
         onChangeValueViewBtn(new ActionEvent());
 
     }
+
 
     /////////////////////////////////////////////////////////////
     //STOP
@@ -337,7 +299,7 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
 
     public void onClickCloseSettingPanel(ActionEvent actionEvent) {
         settingPanelSize = spTop.getDividerPositions()[0];
-        spTop.setDisable(true);
+        spTop.setMaxWidth(Double.MAX_VALUE);
         spTop.setDividerPosition(0, 0);
         settingPanelIsClose = true;
         allBtnLeftPanelStyleClear();
@@ -389,7 +351,8 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
                 } else {
                     spTop.setDividerPosition(0, 0.2);
                 }
-                spTop.setDisable(false);
+//                spTop.setDisable(false);
+
                 settingPanelIsClose = false;
             } else {
 
@@ -424,7 +387,7 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
 
     public void onClickCloseJournalPanel(ActionEvent actionEvent) { //нижняя кнопка
         if (journalPanelIsClose) {
-            spGorizont.setDisable(false);
+//            spGorizont.setDisable(false);
             journalPanelIsClose = false;
             if (journalPanelIsSize > 0.003) {
                 spGorizont.setDividerPosition(0, journalPanelIsSize);
@@ -592,10 +555,11 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
     }
 
     public void terminalInput(byte[] bytes) {
-        StringBuilder str = new StringBuilder(">> ");
+
+        StringBuilder str = new StringBuilder(Calendar.getInstance().getTime().toString() + "\n>> ");
         for (byte b : bytes)
             str.append(String.format("0x%02X ", b));
-        serialTerminalScreen.appendText(str + "\n");
+        serialTerminalScreen.setText(str + "\n");
     }
 
     /**
@@ -603,9 +567,6 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
      * *********************************************************************
      */
     ///////////////////////////////////////////////////////////////////////////
-    public void onClickConnect(ActionEvent actionEvent) {
-
-    }
 
 
     /////////////////////////////////////////////////////////////////////////
@@ -618,7 +579,6 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
     //**********************************************************************///
     ///////////MIGU//////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
-
     public void addMiguInPanel(ActionEvent actionEvent) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -631,13 +591,29 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
             dialogStage.setScene(scene);
             AddMiguController miguController = fxmlLoader.getController();
             dialogStage.showAndWait();
-            if (miguController.isOkClick)
+            if (miguController.isOkClick) {
                 miguHandle.addMigu(rootMigu, treeMigu, miguController.getMigu());
+                addTabMigu(miguController.getMigu().getNumber());
+
+
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    private void addTabMigu(int number){
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(Main.class.getResource("/ru/artsok/view/viewMigu.fxml"));
+        try {
+            anchorPaneViewMigu = fxmlLoader.load();
+            Tab tab = new Tab("МИЖУ №" + number, anchorPaneViewMigu);
+            tabPanelViewMigu.getTabs().add(tab);
+            anchorPaneViewMigu.setMinSize(leftAnchorPanel.getWidth(), leftAnchorPanel.getWidth() / 1.8);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void removeMiguInPanel(ActionEvent actionEvent) {
         TreeItem<String> item = treeMigu.getSelectionModel().getSelectedItem();
@@ -647,6 +623,17 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
             miguHandle.removeMiguByNumberTreeView(item.getValue());
         }
     }
+
+    /////////////////////////////////////////////////////////////////////////
+    //TCP
+    /////////////////////////////////////////////////////////////////////////
+
+    public void onClickBtnStartTcpConnect(ActionEvent actionEvent) {
+        new TcpClient(tbNameTcpServer.getText()).start();
+    }
+
+
+    //////////////////////////////////////////////////////////////////////////
 
 
 }
