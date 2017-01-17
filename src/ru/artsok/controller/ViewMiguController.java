@@ -1,6 +1,9 @@
 package ru.artsok.controller;
 
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -10,6 +13,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.util.Duration;
+import ru.artsok.entity.Migu;
+import ru.artsok.entity.interfaces.MiguHandle;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -24,6 +30,7 @@ public class ViewMiguController implements Initializable {
     public HBox hboxEH1;
     public HBox hboxEH2;
     public Label labelMass;
+    public HBox boxNoResponseSerialPort;
 
 
     @Override
@@ -57,8 +64,21 @@ public class ViewMiguController implements Initializable {
 
         });
 
-//        hboxXA1.setStyle("-fx-background-image: url('/ru/artsok/resources/images/main_view/XA/XA1_sleep.gif')");
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
+            for (Migu migu : MiguHandle.miguMap.getMap().values()) {
 
+                if (migu.getStates().isMiguIsRespond()) {
+                    migu.getAnchorPaneViewMigu().getChildren().get(6).setOpacity(0.0);
 
+                } else {
+                    migu.getAnchorPaneViewMigu().getChildren().get(6).setOpacity(1.0);
+                }
+
+            }
+        }
+
+        ));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
     }
 }

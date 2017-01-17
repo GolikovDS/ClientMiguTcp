@@ -3,13 +3,13 @@ package ru.artsok.entity;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @XmlRootElement(name = "MIGU")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MiguMap {
-    private Map<Integer, Migu> map = new HashMap<Integer, Migu>();
+    private Map<Integer, Migu> map = new ConcurrentHashMap<Integer, Migu>();
 
     public void setState(Integer number, MiguState state) {
         map.get(number).setStates(state);

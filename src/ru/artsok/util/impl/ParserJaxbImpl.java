@@ -38,7 +38,10 @@ public class ParserJaxbImpl implements ParserJaxb {
             context = JAXBContext.newInstance(MiguMap.class);
             Unmarshaller unmarshaller = context.createUnmarshaller();
             miguMap = (MiguMap) unmarshaller.unmarshal(new File("src/ru/artsok/resources/xml_state/test.xml"));
-            MiguHandle.miguMap.getMap().putAll(miguMap.getMap());
+            for (Migu migu : miguMap.getMap().values()) {
+                MiguHandle.miguMap.getMap().put(migu.getNumber(), migu.setViewItem());
+//                MiguHandle.miguMap.getMap().putAll(miguMap.getMap());
+            }
         } catch (JAXBException e) {
             e.printStackTrace();
         }

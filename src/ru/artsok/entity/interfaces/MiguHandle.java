@@ -11,5 +11,5 @@ public interface MiguHandle {
     public void view();
     public void addMigu(TreeItem<String> rootMigu,  TreeView<String> treeMigu, Migu migu);
 
-    public void removeMiguByNumberTreeView(String number);
+    public Migu removeMiguByNumberTreeView(String number);
 }

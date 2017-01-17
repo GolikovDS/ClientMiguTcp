@@ -1,13 +1,15 @@
 package ru.artsok;
 
 
-import ru.artsok.tcp.TcpClient;
+import ru.artsok.util.Queue;
 
 public class TestApp {
     public static void main(String[] args) {
-       TcpClient tcpClient = new TcpClient("192.168.55.145");
-        tcpClient.start();
-        tcpClient.stop();
 
+        Queue<String> queue = new Queue<>(3);
+        for (int i = 0; i <16; i++) {
+            queue.append(String.valueOf(i));
+            System.out.println(queue.toString());
+        }
     }
 }

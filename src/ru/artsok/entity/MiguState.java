@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 public class MiguState {
     private boolean miguIsRespond;
 
+
     public MiguState() {
     }
 

@@ -150,5 +150,31 @@
     -fx-background-color: rgb(230, 230, 230);
 }
 
-.hboxXA1 {
+.tabPanelViewMigu {
+    -fx-background-radius: 0;
+}
+
+.tab-pane > .tab-header-area > .tab-header-background {
+    -fx-background-color: -fx-outer-border, -fx-text-box-border, rgb(230, 230, 230);
+}
+
+.tab {
+    -fx-background-radius: 0;
+}
+
+/*.tab:pressed {*/
+    /*-fx-background-radius: 0;*/
+    /*-fx-border-color: rgb(200, 115, 38);*/
+/*}*/
+
+/*.tab:selected {*/
+    /*-fx-background-radius: 0;*/
+    /*-fx-background-color: rgb(225, 225, 225);*/
+    /*-fx-border-color: rgb(50, 170, 210);*/
+
+/*}*/
+
+.tree-cell:selected{
+    -fx-background-color: rgb(225, 225, 225);
+    -fx-text-fill: #000000;
 }

@@ -3,6 +3,7 @@ package ru.artsok.controller;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.value.ObservableValue;
@@ -89,16 +90,17 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
     public TextField tbNameTcpServer;
     public TabPane tabPanelViewMigu;
     public Label DebugLabel;
+    public ListView journalList;
 
 
     private int btnLeftPanelIsChoice;
     private GridPane[] gridPanelsLeft;
-    private static TreeItem<String> rootMigu = new TreeItem<String>("Устройства");
+    private static TreeItem<String> rootMigu = new TreeItem<>("Устройства");
     private SerialPortMigu streamMigu = null;
 
     MiguHandle miguHandle = new MiguHandleImpl();
 
-    AnchorPane anchorPaneViewMigu;
+//    AnchorPane anchorPaneViewMigu = new AnchorPane();
 
     /////////////////////////////////////////////////////////////
     //START
@@ -106,6 +108,7 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
 
         ///////////////////////////////////////////////////////////////
         //
@@ -122,18 +125,19 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
 
                 if (journalPanelIsClose) {
                     onClickCloseJournal(new ActionEvent());
-                } else {
-//                    spGorizont.setDisable(false);
                 }
 
                 if (settingPanelIsClose) {
                     onClickCloseSettingPanel(new ActionEvent());
-                } else {
-//                    spTop.setDisable(false);
                 }
 
                 Thread.sleep(100);
-                anchorPaneViewMigu.setPrefSize(leftAnchorPanel.getWidth(), leftAnchorPanel.getHeight());
+                setAnchorPanelSizeFromMapMigu();
+
+                if (checkAvtoSerialPort.isSelected()) {
+                    btnStartSerialPort.setSelected(true);
+                    onClickStartSerialPort();
+                }
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -142,6 +146,14 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
             spGorizont.setDisable(false);
             spTop.setDisable(false);
 
+            Properties properties1 = new Properties();
+            try {
+                properties1.load(new FileInputStream(patchProperties + "error_and_event_from_migu.properties"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            journalList.setDisable(false);
+            journalList.setItems(FXCollections.observableArrayList(properties1.getProperty("1"), properties1.getProperty("4"), properties1.getProperty("2"), properties1.getProperty("7")));
         }).start();
 
         /////////////////////////////////////////////////////////////////////////////////////
@@ -164,24 +176,23 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
         doubleProperty.addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
             if (!panelJournal.isDisable())
                 journalPanelIsSizeInListener = (double) newValue;
-
         });
 
         doubleProperty = spTop.getDividers().get(0).positionProperty();
         doubleProperty.addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
-            if (!settingPanelIsClose)
+            if (!settingPanelIsClose) {
                 settingPanelSizeInListener = (double) newValue;
+            }
         });
 
         ReadOnlyDoubleProperty readOnlyDoubleProperty = leftAnchorPanel.heightProperty();
         readOnlyDoubleProperty.addListener((observable, oldValue, newValue) -> {
-            anchorPaneViewMigu.setMinSize(leftAnchorPanel.getWidth(), leftAnchorPanel.getWidth() / 1.8);
+            setAnchorPanelSizeFromMapMigu();
         });
         readOnlyDoubleProperty = leftAnchorPanel.widthProperty();
         readOnlyDoubleProperty.addListener((observable, oldValue, newValue) -> {
-            anchorPaneViewMigu.setMinSize(leftAnchorPanel.getWidth(), leftAnchorPanel.getWidth() / 1.8);
+            setAnchorPanelSizeFromMapMigu();
         });
-
 
         menuRadioBtnMigu.setSelected(btnShowMigu);
         menuRadioBtnTcp.setSelected(btnShowTcp);
@@ -190,9 +201,12 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
 
         new ParserJaxbImpl().getMigu();
         for (Migu migu : MiguHandle.miguMap.getMap().values()) {
+
             miguHandle.addMigu(rootMigu, treeMigu, migu);
-            addTabMigu(migu.getNumber());
+            tabPanelViewMigu.getTabs().add(migu.getTab());
+
         }
+        setAnchorPanelSizeFromMapMigu();
 
         try {
             cbSeriatPortNames.setItems(FXCollections.observableArrayList(SerialPortWrapper.getPortNames()));
@@ -202,7 +216,6 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
             cbSeriatPortChetnost.setItems(FXCollections.observableArrayList(Arrays.asList("Чет", "Нечет", "Нет", "Маркер", "Пробел")));
             cbSeriatPortStopBit.setItems(FXCollections.observableArrayList(Arrays.asList("1", "1.5", "2")));
 
-
             Properties properties = new Properties();
             properties.load(new FileInputStream("src/ru/artsok/resources/properties/serial_port.properties"));
             cbSeriatPortNames.getSelectionModel().select(Integer.parseInt(properties.getProperty("port")));
@@ -210,6 +223,7 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
             cbSeriatPortBitInSekond.getSelectionModel().select(Integer.parseInt(properties.getProperty("speed")));
             cbSeriatPortChetnost.getSelectionModel().select(Integer.parseInt(properties.getProperty("parity")));
             cbSeriatPortStopBit.getSelectionModel().select(Integer.parseInt(properties.getProperty("stopBit")));
+            checkAvtoSerialPort.setSelected(Boolean.parseBoolean(properties.getProperty("autoStartPort")));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -221,32 +235,24 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
         ///////////////////////////////////////////////////////////////////////////
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
-            TreeItem treeItem;
-
-            for (int i = 0; i < MiguHandle.miguMap.getMap().size(); i++) {
-                treeItem = rootMigu.getChildren().get(i);
-                String str = treeItem.getValue().toString();
-                Integer number = Integer.valueOf(str.substring(str.indexOf("№") + 2));
-                if (MiguHandle.miguMap.getState(number).isMiguIsRespond()) {
+            for (Migu migu : MiguHandle.miguMap.getMap().values()) {
+                if (migu.getStates().isMiguIsRespond() && btnStartSerialPort.isSelected()) {
                     ImageView imageView = new ImageView(new Image("ru/artsok/resources/icon/OK.png"));
                     imageView.setFitWidth(15);
                     imageView.setFitHeight(15);
-                    treeItem.setGraphic(imageView);
+                    migu.getTreeItem().setGraphic(imageView);
                 } else {
                     ImageView imageView = new ImageView(new Image("ru/artsok/resources/icon/x.png"));
                     imageView.setFitWidth(15);
                     imageView.setFitHeight(15);
-                    treeItem.setGraphic(imageView);
+                    migu.getTreeItem().setGraphic(imageView);
                 }
                 treeMigu.refresh();
             }
-
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 ////////////////////////////////////////////////////////////////////////////////////
-
-
 
         ////////////////////////////////////////
         //TCP
@@ -256,9 +262,12 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
         ////////////////////////////////////////
         closeLeftPanel(1);
         onChangeValueViewBtn(new ActionEvent());
-
     }
 
+    private void setAnchorPanelSizeFromMapMigu() {
+        for (Migu migu : MiguHandle.miguMap.getMap().values())
+            migu.setAnchorPaneSize(leftAnchorPanel.getWidth(), leftAnchorPanel.getWidth() / 1.8);
+    }
 
     /////////////////////////////////////////////////////////////
     //STOP
@@ -294,14 +303,13 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
                 e.printStackTrace();
             }
         }
-
-
     }
 
     public void onClickCloseSettingPanel(ActionEvent actionEvent) {
         settingPanelSize = spTop.getDividerPositions()[0];
         spTop.setMaxWidth(Double.MAX_VALUE);
         spTop.setDividerPosition(0, 0);
+
         settingPanelIsClose = true;
         allBtnLeftPanelStyleClear();
     }
@@ -356,13 +364,11 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
 
                 settingPanelIsClose = false;
             } else {
-
                 onClickCloseSettingPanel(new ActionEvent());
             }
         } else {
             btnLeftPanelIsChoice = numBtn;
         }
-
     }
 
 
@@ -373,17 +379,15 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
         }
         obj.setVisible(true);
         obj.setDisable(false);
-
     }
 
-
 ///////////////////////////////////////////////////////////////////////////////////////
-
 
     public void onClickCloseJournal(ActionEvent actionEvent) { //кнопка панели
         journalPanelIsSize = spGorizont.getDividerPositions()[0];
         journalPanelIsClose = true;
         spGorizont.setDividerPosition(0, 1);
+
     }
 
     public void onClickCloseJournalPanel(ActionEvent actionEvent) { //нижняя кнопка
@@ -471,28 +475,14 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
         btnJournalPanel.setVisible(btnShowJournal);
     }
 
-
     ///////////////////////////////////////////////////////////////////////////
     //**********************************************************************///
     ///////////RS-485//////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
-    public void onClickStartSerialPort(ActionEvent actionEvent) {
-        if (btnStartSerialPort.isSelected()) {
-            //Запоминаем установки/////////////////////////////////////////////
-            try {
-                Properties properties = new Properties();
-                properties.setProperty("port", String.valueOf(cbSeriatPortNames.getSelectionModel().getSelectedIndex()));
-                properties.setProperty("speed", String.valueOf(cbSeriatPortBitInSekond.getSelectionModel().getSelectedIndex()));
-                properties.setProperty("stopBit", String.valueOf(cbSeriatPortStopBit.getSelectionModel().getSelectedIndex()));
-                properties.setProperty("parity", String.valueOf(cbSeriatPortChetnost.getSelectionModel().getSelectedIndex()));
-                properties.setProperty("dataBit", String.valueOf(cbSeriatPortBitData.getSelectionModel().getSelectedIndex()));
-                properties.setProperty("autoStartPort", String.valueOf(checkAvtoSerialPort.isSelected()));
+    public void onClickStartSerialPort() {
 
-                properties.store(new FileOutputStream(patchProperties + "serial_port.properties"), null);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            /******************************************************************/
+
+        if (btnStartSerialPort.isSelected()) {
 
             checkAvtoSerialPort.setDisable(true);
             cbSeriatPortBitData.setDisable(true);
@@ -530,11 +520,27 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
         }
     }
 
+    public void checkAvtoSerialPortOnAction(ActionEvent actionEvent) {
+        //Запоминаем установки/////////////////////////////////////////////
+        try {
+            Properties properties = new Properties();
+            properties.setProperty("port", String.valueOf(cbSeriatPortNames.getSelectionModel().getSelectedIndex()));
+            properties.setProperty("speed", String.valueOf(cbSeriatPortBitInSekond.getSelectionModel().getSelectedIndex()));
+            properties.setProperty("stopBit", String.valueOf(cbSeriatPortStopBit.getSelectionModel().getSelectedIndex()));
+            properties.setProperty("parity", String.valueOf(cbSeriatPortChetnost.getSelectionModel().getSelectedIndex()));
+            properties.setProperty("dataBit", String.valueOf(cbSeriatPortBitData.getSelectionModel().getSelectedIndex()));
+            properties.setProperty("autoStartPort", String.valueOf(checkAvtoSerialPort.isSelected()));
+
+            properties.store(new FileOutputStream(patchProperties + "serial_port.properties"), null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        /******************************************************************/
+    }
+
     @Override
     public void calling(byte[] bytes) {
         terminalInput(bytes);
-
-
     }
 
     @Override
@@ -563,19 +569,6 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
         serialTerminalScreen.setText(str + "\n");
     }
 
-    /**
-     * ********************************************************************
-     * *********************************************************************
-     */
-    ///////////////////////////////////////////////////////////////////////////
-
-
-    /////////////////////////////////////////////////////////////////////////
-    //   *****  *    *   ***
-    //   *      *  *  * ** ***
-    ////////////////////////////////////////////////////////////////////////
-
-
     ///////////////////////////////////////////////////////////////////////////
     //**********************************************************************///
     ///////////MIGU//////////////////////////////////////////////////////////
@@ -593,9 +586,9 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
             AddMiguController miguController = fxmlLoader.getController();
             dialogStage.showAndWait();
             if (miguController.isOkClick) {
-                miguHandle.addMigu(rootMigu, treeMigu, miguController.getMigu());
-                addTabMigu(miguController.getMigu().getNumber());
 
+                miguHandle.addMigu(rootMigu, treeMigu, miguController.getMigu());
+                addTabMigu(miguController.getMigu());
 
             }
         } catch (IOException e) {
@@ -603,25 +596,18 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
         }
     }
 
-    private void addTabMigu(int number){
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(Main.class.getResource("/ru/artsok/view/viewMigu.fxml"));
-        try {
-            anchorPaneViewMigu = fxmlLoader.load();
-            Tab tab = new Tab("МИЖУ №" + number, anchorPaneViewMigu);
-            tabPanelViewMigu.getTabs().add(tab);
-            anchorPaneViewMigu.setMinSize(leftAnchorPanel.getWidth(), leftAnchorPanel.getWidth() / 1.8);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void addTabMigu(Migu migu) {
+        tabPanelViewMigu.getTabs().add(migu.getTab());
+        migu.setAnchorPaneSize(leftAnchorPanel.getWidth(), leftAnchorPanel.getWidth() / 1.8);
     }
 
-    public void removeMiguInPanel(ActionEvent actionEvent) {
+    public void removeMiguInPanel() {
         TreeItem<String> item = treeMigu.getSelectionModel().getSelectedItem();
-        if (item.getValue().contains("МИЖУ зав. №")) {
+        if (item != null && item.getValue().contains("МИЖУ зав. №")) {
             TreeItem<String> parent = item.getParent();
             parent.getChildren().remove(item);
-            miguHandle.removeMiguByNumberTreeView(item.getValue());
+            Tab miguTab = miguHandle.removeMiguByNumberTreeView(item.getValue()).getTab();
+            tabPanelViewMigu.getTabs().remove(miguTab);
         }
     }
 
@@ -633,10 +619,23 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
         new TcpClient(tbNameTcpServer.getText()).start();
     }
 
+    public void treeViewMiguOnPressedMouse(Event event) {
+        TreeItem<String> item = treeMigu.getSelectionModel().getSelectedItem();
+        if (item != null && item.getValue().contains("МИЖУ зав. №")) {
+            tabPanelViewMigu.getSelectionModel().select(treeMigu.getSelectionModel().getSelectedIndex() - 1);
+        }
+    }
+
+    public void tabPanelViewMiguOnMousePressed(Event event) {
+        treeMigu.getSelectionModel().select(tabPanelViewMigu.getSelectionModel().getSelectedIndex() + 1);
+    }
+
+    public void meinMenuOnClose(ActionEvent actionEvent) {
+        Platform.exit();
+    }
+
 
     //////////////////////////////////////////////////////////////////////////
-
-
 }
 
 

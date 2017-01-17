@@ -9,9 +9,7 @@ import ru.artsok.entity.Migu;
 import ru.artsok.entity.MiguState;
 import ru.artsok.entity.interfaces.MiguHandle;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 
 public class SerialPortMigu {
@@ -50,27 +48,12 @@ public class SerialPortMigu {
     }
 
 
-//
-//    public SerialPortMiguImpl(String port, int speed, int bitData, String party, String stopBit) {
-//        synchronized (this) {
-//            if (serialPort == null) {
-//                try {
-//                    serialPort = new SerialPort(port);
-//                    serialPort.setParams(speed, bitData, Integer.parseInt(stopBit), 3);
-//                } catch (SerialPortException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//    }
-
-
     public synchronized byte[] getData(List<Byte> request, int sizeResponse, TextArea terminal) throws SerialPortException, SerialPortTimeoutException {
         byte[] response = null;
         terminalOutput(request, terminal);
         CRC16 crc16 = new CRC16(request);
         serialPort.writeBytes(crc16.getDataAndCrc());
-        response = serialPort.readBytes(sizeResponse, 1000);
+        response = serialPort.readBytes(sizeResponse, 500);
         terminalInput(response, terminal);
         return response;
     }
@@ -78,7 +61,7 @@ public class SerialPortMigu {
     public synchronized byte[] getData(List<Byte> request, int sizeResponse) throws SerialPortException, SerialPortTimeoutException {
         CRC16 crc16 = new CRC16(request);
         serialPort.writeBytes(crc16.getDataAndCrc());
-        return serialPort.readBytes(sizeResponse, 1000);
+        return serialPort.readBytes(sizeResponse, 500);
     }
 
     public void terminalOutput(List<Byte> bytes, TextArea serialTerminalScreen) {
@@ -107,53 +90,50 @@ public class SerialPortMigu {
             }
 
         }).start();
-
     }
 
     public void readAllRegMigu(UpdateDataCallBack callBack) {
         Thread thread = new Thread(() ->
         {
             registerCallBack(callBack);
-            //controller.serialTerminalScreen.appendText("Поток: " + Thread.currentThread().getName() + " стартовал\n");
             long timeRequest = 0;
             int counterRequestForDeathMigu = 0;
-            byte address = 0;
-            List<Byte> deathMigu = new ArrayList<Byte>();
+
+            for (Migu migu : MiguHandle.miguMap.getMap().values())
+                migu.getStates().setMiguIsRespond(true);
 
             while (serialPort.isOpened()) {
-
                 timeRequest = System.currentTimeMillis();
                 for (Migu migu : MiguHandle.miguMap.getMap().values()) {
-                    address = (byte) migu.getAddress();
-                    try {
-                        if (!deathMigu.contains(address)) {
-                            callBack.calling(portMigu.getData(Arrays.asList(new Byte[]{address, 0x03, 0x01, -128, 0x00, 0x00}), 7));
-                            MiguHandle.miguMap.setStateByAddress(address, new MiguState(true));
+                    if (migu.getStates().isMiguIsRespond()) {
+                        try {
+                            callBack.calling(portMigu.getData(Arrays.asList(new Byte[]{(byte) migu.getAddress(), 0x41, 0x00, 0x00}), 7));
+                            migu.getStates().setMiguIsRespond(true);
+                        } catch (SerialPortTimeoutException | SerialPortException e) {
+                            System.err.println("Exception !!!" + e.getMessage());
+                            migu.getStates().setMiguIsRespond(false);
                         }
-
-                    } catch (SerialPortException | SerialPortTimeoutException e) {
-//                        serialTerminalScreen.appendText("Нет ответа " + e.getMessage() + "\n");
-                        deathMigu.add(address);
                     }
                 }
                 //проверка раз в 5 секунд что МИЖУ не отвечает
-                if (counterRequestForDeathMigu == 5 && deathMigu.size() > 0) {
+                if (counterRequestForDeathMigu == 5) {
                     counterRequestForDeathMigu = 0;
-                    try {
-                        portMigu.getData(Arrays.asList(new Byte[]{address, 0x03, 0x01, -128, 0x00, 0x00}), 7);
-                    } catch (SerialPortException | SerialPortTimeoutException e) {
+                    for (Migu deathMiguAddres : MiguHandle.miguMap.getMap().values()) {
+                        try {
+                            portMigu.getData(Arrays.asList(new Byte[]{(byte) deathMiguAddres.getAddress(), 0x41, 0x00, 0x00}), 7);
+                            deathMiguAddres.getStates().setMiguIsRespond(true);
+                        } catch (SerialPortException | SerialPortTimeoutException e) {
 //                        serialTerminalScreen.appendText("Нет ответа " + e.getMessage() + "\n");
-                        deathMigu.add(address);
-                        MiguHandle.miguMap.setStateByAddress(address, new MiguState(false));
-                        System.err.println("Нет ответа " + e.getMessage());
+                            deathMiguAddres.getStates().setMiguIsRespond(false);
+                            System.err.println("Нет ответа от МИЖУ №" + deathMiguAddres + " \nОшибка: " + e.getMessage());
+                        }
                     }
                 }
                 counterRequestForDeathMigu++;
                 timeRequest -= System.currentTimeMillis();
-//                serialTerminalScreen.appendText(String.valueOf(timeRequest) + "\n");
-
                 //опрос не более 1 раза в секунду -  рассчитываеться время потраченное на запрос/ответ от МИЖУ и
                 // отнимаеться от секунды, остаток от секунды ждем.
+                System.out.println("Time request" + timeRequest);
                 if (timeRequest < 1000)
                     try {
                         Thread.sleep(1000 - timeRequest);
@@ -162,7 +142,6 @@ public class SerialPortMigu {
                     }
                 callBack.callIsFreshMigu();
             }
-//            serialTerminalScreen.appendText("Поток: " + Thread.currentThread().getName() + " остановлен\n");
 
         });
         thread.setDaemon(true);

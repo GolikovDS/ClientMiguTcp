@@ -16,9 +16,9 @@
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
   </columnConstraints>
-  <SplitPane fx:id="spGorizont" disable="true" dividerPositions="0.9216666666666666" focusTraversable="true" minHeight="250.0" minWidth="300.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
+  <SplitPane fx:id="spGorizont" disable="true" dividerPositions="0.5466666666666666" focusTraversable="true" minHeight="250.0" minWidth="300.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
     <AnchorPane fx:id="panelAll" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: rgb(212, 212, 212);">
-      <SplitPane fx:id="spTop" blendMode="SRC_OVER" cache="true" cacheHint="DEFAULT" depthTest="INHERIT" dividerPositions="0.4682875264270613" focusTraversable="true" minHeight="50.0" mouseTransparent="false" pickOnBounds="false" prefHeight="229.0" prefWidth="1321.0" visible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+      <SplitPane fx:id="spTop" blendMode="SRC_OVER" cache="true" cacheHint="DEFAULT" depthTest="INHERIT" dividerPositions="0.46723044397463004" focusTraversable="true" minHeight="50.0" mouseTransparent="false" pickOnBounds="false" prefHeight="229.0" prefWidth="1321.0" visible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
         <AnchorPane fx:id="settingPanelMigu" disable="false" focusTraversable="false" minHeight="0.0" minWidth="0.0" pickOnBounds="true" prefHeight="351.0" prefWidth="127.0" styleClass="split-panel-anchor" visible="true">
           <GridPane fx:id="gridPanelMigu" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <GridPane id="settingPanel" maxHeight="-1.0" maxWidth="-1.0" minHeight="-1.0" minWidth="-1.0" prefHeight="60.0" prefWidth="-1.0" style="&#10;" GridPane.columnIndex="0" GridPane.rowIndex="0">
@@ -79,7 +79,16 @@
                 <rowConstraints>
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 </rowConstraints>
-                <TreeView fx:id="treeMigu" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <TreeView fx:id="treeMigu" onMousePressed="#treeViewMiguOnPressedMouse" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                  <contextMenu>
+                    <ContextMenu>
+                      <items>
+                        <MenuItem mnemonicParsing="false" onAction="#addMiguInPanel" text="Добавить" />
+                        <MenuItem mnemonicParsing="false" onAction="#removeMiguInPanel" text="Удалить" />
+                      </items>
+                    </ContextMenu>
+                  </contextMenu>
+                </TreeView>
               </GridPane>
               <rowConstraints>
                 <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
@@ -126,7 +135,7 @@
                   <Insets left="10.0" fx:id="x1" />
                 </GridPane.margin>
               </ToggleButton>
-              <CheckBox fx:id="checkAvtoSerialPort" mnemonicParsing="false" text="Подключаться автоматически" GridPane.columnIndex="0" GridPane.rowIndex="7">
+              <CheckBox fx:id="checkAvtoSerialPort" mnemonicParsing="false" onAction="#checkAvtoSerialPortOnAction" text="Подключаться автоматически" GridPane.columnIndex="0" GridPane.rowIndex="7">
                 <GridPane.margin>
                   <Insets left="10.0" top="50.0" />
                 </GridPane.margin>
@@ -278,13 +287,20 @@
         </AnchorPane>
         <AnchorPane fx:id="leftAnchorPanel" minHeight="200.0" minWidth="200.0" prefHeight="535.0" prefWidth="967.0" style="" styleClass="split-panel-anchor" visible="true">
           <children>
-            <TabPane fx:id="tabPanelViewMigu" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <TabPane fx:id="tabPanelViewMigu" onMousePressed="#tabPanelViewMiguOnMousePressed" prefHeight="200.0" prefWidth="200.0" styleClass="tabPanelViewMigu" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
           </children>
         </AnchorPane>
       </SplitPane>
     </AnchorPane>
     <AnchorPane fx:id="panelJournal" maxHeight="300.0" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
       <GridPane fx:id="menuJournal" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
         <GridPane styleClass="menu-journal" GridPane.columnIndex="0" GridPane.rowIndex="0">
           <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -306,13 +322,11 @@
             </GridPane.margin>
           </Label>
         </GridPane>
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
+        <ListView id="patchProperties" fx:id="journalList" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+          <GridPane.margin>
+            <Insets />
+          </GridPane.margin>
+        </ListView>
       </GridPane>
     </AnchorPane>
     <GridPane.margin>
@@ -324,7 +338,7 @@
       <Insets />
     </GridPane.margin>
     <Menu mnemonicParsing="false" style="" text="Файл">
-      <MenuItem mnemonicParsing="false" style="" text="Закрыть" />
+      <MenuItem mnemonicParsing="false" onAction="#meinMenuOnClose" style="" text="Закрыть" />
     </Menu>
     <Menu mnemonicParsing="false" text="Вид">
       <Menu mnemonicParsing="false" text="Показывать окна">
@@ -334,10 +348,9 @@
         <RadioMenuItem mnemonicParsing="false" onAction="#onChangeValueViewBtn" text="Журнал" fx:id="menuRadioBtnJournal" />
       </Menu>
       <SeparatorMenuItem mnemonicParsing="false" />
-      <MenuItem mnemonicParsing="false" text="Закрепить" />
     </Menu>
     <Menu mnemonicParsing="false" text="Справка">
-      <MenuItem mnemonicParsing="false" text="About" />
+      <MenuItem mnemonicParsing="false" text="О программе" />
     </Menu>
   </MenuBar>
   <GridPane maxWidth="25.0" minWidth="25.0" prefWidth="25.0" GridPane.columnIndex="0" GridPane.rowIndex="0">

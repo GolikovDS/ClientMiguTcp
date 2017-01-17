@@ -43,3 +43,11 @@
     -fx-background-size: 100% 100%;
     -fx-background-position: center center;
 }
+
+.boxResponse {
+    -fx-background-image: url('/ru/artsok/resources/images/noResponse.gif');
+    -fx-background-repeat: stretch;
+    -fx-background-size: 100% 100%;
+    -fx-background-position: center center;
+
+}
