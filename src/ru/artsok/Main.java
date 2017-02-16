@@ -16,13 +16,14 @@ import static ru.artsok.SettingMainController.*;
 public class Main extends Application {
 
     private static Controller controller = new Controller();
+    public static boolean appIsLive;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
+        appIsLive = true;
         try {
             Properties properties = new Properties();
-            properties.load(new FileInputStream("src/ru/artsok/resources/properties/panel_size.properties"));
+            properties.load(new FileInputStream(patchProperties + "/panel_size.properties"));
             settingPanelSize = Double.parseDouble(properties.getProperty("vertical"));
             journalPanelIsSize = Double.parseDouble(properties.getProperty("horizontal"));
             settingPanelIsClose = Boolean.parseBoolean(properties.getProperty("verticalClose"));
@@ -52,6 +53,7 @@ public class Main extends Application {
 
     @Override
     public void stop() throws Exception {
+        appIsLive = false;
         System.out.println("Stop App");
     }
 

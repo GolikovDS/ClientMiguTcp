@@ -14,8 +14,10 @@ public class SettingMainController {
     public static boolean btnShowTcp;
     public static boolean btnShowJournal;
 
-    public static String patchProperties = "src/ru/artsok/resources/properties/";
+    public static String patchProperties = "main/ru/artsok/resources/properties/";//for build
+//    public final static String patchProperties = "src/ru/artsok/resources/properties/";//for debug
 
+    public final static String patchImage = "ru/artsok/resources/images/view/";
 
 
 

@@ -11,6 +11,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
+import java.io.StringWriter;
 import java.util.List;
 
 public class ParserJaxbImpl implements ParserJaxb {
@@ -28,6 +29,24 @@ public class ParserJaxbImpl implements ParserJaxb {
         } catch (JAXBException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public String getMiguToString() {
+        StringWriter sw = new StringWriter();
+        JAXBContext context = null;
+        try {
+            context = JAXBContext.newInstance(MiguMap.class);
+            Marshaller marshaller = context.createMarshaller();
+
+//            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            MiguMap miguMap = new MiguMap();
+            miguMap.setMap(MiguHandle.miguMap.getMap());
+            marshaller.marshal(miguMap,sw);
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+        return sw.toString();
     }
 
     @Override

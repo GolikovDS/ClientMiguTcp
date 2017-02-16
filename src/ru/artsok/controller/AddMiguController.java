@@ -2,7 +2,6 @@ package ru.artsok.controller;
 
 
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -35,7 +34,7 @@ public class AddMiguController implements Initializable {
     private Migu migu;
 
 
-    public void okDialogBtnClick(ActionEvent actionEvent) {
+    public void okDialogBtnClick() {
         try {
             setMigu(new Migu(Integer.parseInt(addressInRS485.getText()),
                     Integer.parseInt(number.getText()),
@@ -49,7 +48,7 @@ public class AddMiguController implements Initializable {
         }
     }
 
-    public void cancelDialogBtnClick(ActionEvent actionEvent) {
+    public void cancelDialogBtnClick() {
         isOkClick = false;
         Stage stage = (Stage) node.getScene().getWindow();
         stage.close();

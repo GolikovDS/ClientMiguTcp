@@ -1,5 +1,5 @@
 .anchorPanelMain {
-    -fx-background-image: url("/ru/artsok/resources/images/main_view/migu_main.gif");
+    -fx-background-image: url("/ru/artsok/resources/images/view/main.gif");
     -fx-background-repeat: stretch;
     -fx-background-size: 100% 100%;
     -fx-background-position: center center;
@@ -10,44 +10,16 @@
 
 }
 
-.labelPress {
-    /*-fx-text-fill: #c84839;*/
-    /*-fx-effect: dropshadow( gaussian , rgba(118, 255, 0, 0.90), 2,2,2,2 );*/
-}
-
-.hboxXA1 {
-    -fx-background-image: url('/ru/artsok/resources/images/main_view/XA/XA1_sleep.gif');
-    -fx-background-repeat: stretch;
-    -fx-background-size: 100% 100%;
-    -fx-background-position: center center;
-}
-.hboxXA2 {
-    -fx-background-image: url('/ru/artsok/resources/images/main_view/XA/XA2_sleep.gif');
-    -fx-background-repeat: stretch;
-    -fx-background-size: 100% 100%;
-    -fx-background-position: center center;
-}
-
-
-.hboxEH1 {
-    -fx-background-image: url('/ru/artsok/resources/images/main_view/EH/EH1.gif');
-    -fx-background-repeat: stretch;
-    -fx-background-size: 100% 100%;
-    -fx-background-position: center center;
-}
-
-
-.hboxEH2 {
-    -fx-background-image: url('/ru/artsok/resources/images/main_view/EH/EH2.gif');
-    -fx-background-repeat: stretch;
-    -fx-background-size: 100% 100%;
-    -fx-background-position: center center;
-}
 
 .boxResponse {
     -fx-background-image: url('/ru/artsok/resources/images/noResponse.gif');
     -fx-background-repeat: stretch;
     -fx-background-size: 100% 100%;
     -fx-background-position: center center;
+}
 
+
+
+
+.label_leak {
 }

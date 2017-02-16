@@ -1,15 +1,15 @@
 package ru.artsok.SerialPort;
 
 
-import javafx.scene.control.TextArea;
 import jssc.SerialPort;
 import jssc.SerialPortException;
 import jssc.SerialPortTimeoutException;
+import ru.artsok.Main;
 import ru.artsok.entity.Migu;
-import ru.artsok.entity.MiguState;
 import ru.artsok.entity.interfaces.MiguHandle;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class SerialPortMigu {
@@ -36,7 +36,7 @@ public class SerialPortMigu {
     //callback
     /////////////////////////////////////////////////////////////////
     public interface UpdateDataCallBack {
-        void calling(byte[] bytes);
+        void calling(byte[] bytes, Integer numberMigu);
 
         void callIsFreshMigu();
     }
@@ -47,49 +47,16 @@ public class SerialPortMigu {
         this.callBack = callBack;
     }
 
-
-    public synchronized byte[] getData(List<Byte> request, int sizeResponse, TextArea terminal) throws SerialPortException, SerialPortTimeoutException {
-        byte[] response = null;
-        terminalOutput(request, terminal);
+    public synchronized byte[] getData(List<Byte> request, int sizeResponse) throws SerialPortException, SerialPortTimeoutException, ExceptionCRC {
         CRC16 crc16 = new CRC16(request);
         serialPort.writeBytes(crc16.getDataAndCrc());
-        response = serialPort.readBytes(sizeResponse, 500);
-        terminalInput(response, terminal);
-        return response;
-    }
-
-    public synchronized byte[] getData(List<Byte> request, int sizeResponse) throws SerialPortException, SerialPortTimeoutException {
-        CRC16 crc16 = new CRC16(request);
-        serialPort.writeBytes(crc16.getDataAndCrc());
-        return serialPort.readBytes(sizeResponse, 500);
-    }
-
-    public void terminalOutput(List<Byte> bytes, TextArea serialTerminalScreen) {
-        StringBuilder str = new StringBuilder("<< ");
-        for (byte b : bytes)
-            str.append(String.format("0x%02X ", b));
-        serialTerminalScreen.appendText(str + "\n");
-    }
-
-    public void terminalInput(byte[] bytes, TextArea serialTerminalScreen) {
-        StringBuilder str = new StringBuilder(">> ");
-        for (byte b : bytes)
-            str.append(String.format("0x%02X ", b));
-        serialTerminalScreen.appendText(str + "\n");
-    }
-
-    public void readAllRegMigu2() {
-        new Thread(() -> {
-            while (serialPort.isOpened()) {
-                MiguHandle.miguMap.getMap().get(1).setStates(new MiguState(true));
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }).start();
+        byte[] result = serialPort.readBytes(sizeResponse, 700);
+        byte[] check = new CRC16(Arrays.copyOfRange(result, 0, result.length - 2)).getDataAndCrc();
+        if (check[check.length - 1] == result[result.length - 1] && check[check.length - 2] == result[result.length - 2]) {
+            return Arrays.copyOfRange(result, 3, result.length - 2);
+        } else {
+            throw new ExceptionCRC();
+        }
     }
 
     public void readAllRegMigu(UpdateDataCallBack callBack) {
@@ -98,20 +65,25 @@ public class SerialPortMigu {
             registerCallBack(callBack);
             long timeRequest = 0;
             int counterRequestForDeathMigu = 0;
+            byte length = 0x4A;
 
             for (Migu migu : MiguHandle.miguMap.getMap().values())
                 migu.getStates().setMiguIsRespond(true);
 
-            while (serialPort.isOpened()) {
+            while (serialPort.isOpened() && Main.appIsLive) {
+
                 timeRequest = System.currentTimeMillis();
                 for (Migu migu : MiguHandle.miguMap.getMap().values()) {
-                    if (migu.getStates().isMiguIsRespond()) {
+                    if (migu.getStates().isSelect() || counterRequestForDeathMigu == 0) {
                         try {
-                            callBack.calling(portMigu.getData(Arrays.asList(new Byte[]{(byte) migu.getAddress(), 0x41, 0x00, 0x00}), 7));
+
+                            callBack.calling(portMigu.getData(Arrays.asList(new Byte[]{(byte) migu.getAddress(), 0x44, 0x00, 0x00, 0x00, length}), length * 2 + 5), migu.getNumber());
                             migu.getStates().setMiguIsRespond(true);
                         } catch (SerialPortTimeoutException | SerialPortException e) {
                             System.err.println("Exception !!!" + e.getMessage());
                             migu.getStates().setMiguIsRespond(false);
+                        } catch (ExceptionCRC exceptionCRC) {
+                            exceptionCRC.printStackTrace();
                         }
                     }
                 }
@@ -120,12 +92,13 @@ public class SerialPortMigu {
                     counterRequestForDeathMigu = 0;
                     for (Migu deathMiguAddres : MiguHandle.miguMap.getMap().values()) {
                         try {
-                            portMigu.getData(Arrays.asList(new Byte[]{(byte) deathMiguAddres.getAddress(), 0x41, 0x00, 0x00}), 7);
+                            portMigu.getData(Arrays.asList(new Byte[]{(byte) deathMiguAddres.getAddress(), 0x44, 0x00, 0x00, 0x00, length}), length * 2 + 5);
                             deathMiguAddres.getStates().setMiguIsRespond(true);
                         } catch (SerialPortException | SerialPortTimeoutException e) {
-//                        serialTerminalScreen.appendText("Нет ответа " + e.getMessage() + "\n");
                             deathMiguAddres.getStates().setMiguIsRespond(false);
                             System.err.println("Нет ответа от МИЖУ №" + deathMiguAddres + " \nОшибка: " + e.getMessage());
+                        } catch (ExceptionCRC exceptionCRC) {
+                            exceptionCRC.printStackTrace();
                         }
                     }
                 }

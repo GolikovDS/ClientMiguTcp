@@ -1,6 +1,9 @@
 package ru.artsok.tcp;
 
 
+import ru.artsok.Main;
+import ru.artsok.util.impl.ParserJaxbImpl;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.Timer;
@@ -9,8 +12,8 @@ import java.util.TimerTask;
 public class TcpClient {
     private InputStream inputStream;
     private OutputStream outputStream;
-    private boolean isALive;
-    //    private Socket socket;
+    public static boolean isALive;
+    public static boolean isConnect;
     private String nameTspServer;
 
     public TcpClient(String nameTspServer) {
@@ -18,16 +21,19 @@ public class TcpClient {
     }
 
     public void start() {
-        try (Socket socket = new Socket(nameTspServer, 3333)) {
-
-            getFestConnect(socket);
-            System.out.println("Соеденение установленно");
-            isALive = true;
-            response(socket);
-        } catch (IOException e) {
-            System.err.println("Нет соеденения " + e.getMessage());
-            waitingForConnection();
-        }
+        new Thread(() -> {
+            try (Socket socket = new Socket(nameTspServer, 7588)) {
+                getFestConnect(socket);
+                System.err.println("Соеденение установленно");
+                isALive = true;
+                isConnect = true;
+                response(socket);
+            } catch (IOException e) {
+                isConnect = false;
+                System.err.println("Нет соеденения " + e.getMessage());
+                waitingForConnection();
+            }
+        }).start();
 
     }
 
@@ -36,14 +42,20 @@ public class TcpClient {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                try (Socket socket = new Socket(nameTspServer, 3333)) {
+                try (Socket socket = new Socket(nameTspServer, 7588)) {
                     getFestConnect(socket);
-                    System.out.println("Соеденение установленно");
+                    isConnect = true;
+                    System.err.println("Соеденение установленно");
                     isALive = true;
                     response(socket);
                     timer.cancel();
                 } catch (IOException e) {
-                    System.err.println("Сервер не доступен...\nОжидание... 5 сек. \n Exception: " + e.getMessage());
+                    if (Main.appIsLive) {
+                        isConnect = false;
+                        System.err.println("Сервер не доступен...\nОжидание... 5 сек. \nException: " + e.getMessage());
+                    } else {
+                        timer.cancel();
+                    }
                 }
             }
         }, 5000, 5000);
@@ -51,21 +63,29 @@ public class TcpClient {
 
     private void getFestConnect(Socket socket) throws IOException {
         BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         socket.setSoTimeout(3000);
-        bufferedWriter.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><MIGU>123<MIGU/><ImIsLive!>\n");
+        bufferedWriter.write(new ParserJaxbImpl().getMiguToString());
         bufferedWriter.flush();
     }
 
+
     private void response(Socket socket) {
-        boolean equalsRequest;
-        while (isALive) {
+        String inputText;
+        while (isALive && Main.appIsLive) {
+            System.out.println("Resp start");
+
             try {
-                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                equalsRequest = bufferedReader.readLine().equals("getState");
-                if (equalsRequest) {
-                    bufferedWriter.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><MIGU>123<MIGU/><Response>\n");
+                socket.setSoTimeout(10000);
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "cp1251"));
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream(), "cp1251"));
+                inputText = bufferedReader.readLine();
+                if (inputText.equals("getState")) {
+                    System.out.println("getState");
+                    bufferedWriter.write(new ParserJaxbImpl().getMiguToString() + "\n");
+                    bufferedWriter.flush();
+                } else if (inputText.equals("getNumb")) {
+                    System.out.println("getNumb");
+                    bufferedWriter.write(new ParserJaxbImpl().getMiguToString() + "\n");
                     bufferedWriter.flush();
                 }
 
@@ -83,9 +103,9 @@ public class TcpClient {
             socket.setSoTimeout(3000);
             bufferedWriter.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><MIGU>123<MIGU/><ImDying!>");
             bufferedWriter.flush();
-            System.out.println("Соеденение закрыто");
+            System.err.println("Соеденение закрыто");
         } catch (IOException e) {
-            System.out.println("Нет соеденения \nException " + e.getMessage());
+            System.err.println("Нет соеденения \nException " + e.getMessage());
         } finally {
             isALive = true;
         }
