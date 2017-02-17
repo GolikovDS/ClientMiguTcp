@@ -1,37 +1,42 @@
 package ru.artsok;
 
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.*;
+import java.net.URISyntaxException;
 
 public class TestApp {
 
-    public static void main(String[] args) {
-        byte[] b = new byte[]{0x00, 0x00, 0x00, 0x00, 0x01};
-        List<Integer> integers = new TestApp().getErrOrEvent(b);
-        integers.forEach(System.out::println);
+    public static void main(String[] args) throws IOException, URISyntaxException {
+
     }
 
-    public List<Integer> getErrOrEvent(byte[] bytes) {
-        List<Integer> result = new ArrayList<>();
-        boolean[] flag;
-        for (int i = 0; i < bytes.length; i++) {
-            flag = getFlags(bytes[i]);
-            for (int j = 0; j < 8; j++) {
-                if (flag[j]) {
-                    result.add(i * 8 + j);
-                }
+    public String pathhh(){
+        return getClass().getResource("resources/properties/panel_size.properties").toString();
+    }
+
+    private String loadText() {
+        StringBuilder sb = new StringBuilder();
+        try {
+            FileInputStream fileInputStream = (FileInputStream) getClass().getResourceAsStream("resources/properties/panel_size.properties");
+            InputStream is = getClass().getResourceAsStream("resources/properties/panel_size.properties");
+            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+            BufferedReader br = new BufferedReader(new InputStreamReader(is, "Cp1251"));
+            while (true) {
+                String line = br.readLine();
+                if (line == null)
+                    break;
+                sb.append(line).append("\n");
             }
+        } catch (IOException ex) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            ex.printStackTrace(pw);
+            pw.flush();
+            pw.close();
+            sb.append("Error while loading text: ").append("\n\n");
+            sb.append(sw.getBuffer().toString());
         }
-        return result;
-    }
-
-    public boolean[] getFlags(byte b) {
-        boolean[] result = new boolean[8];
-
-        for (int i = 0; i < 8; i++) {
-            result[i] = ((b >>> i) & 0x01) == 1;
-        }
-        return result;
+        return sb.toString();
     }
 }
+//P:\Разное\Программирование\Spring\ClientMiguTcp.V2\src\ru\artsok\resources\properties\panel_size.properties

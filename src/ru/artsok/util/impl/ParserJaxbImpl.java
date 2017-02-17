@@ -13,6 +13,7 @@ import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.io.StringWriter;
 import java.util.List;
+import static ru.artsok.SettingMainController.*;
 
 public class ParserJaxbImpl implements ParserJaxb {
     @Override
@@ -25,7 +26,7 @@ public class ParserJaxbImpl implements ParserJaxb {
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             MiguMap miguMap = new MiguMap();
             miguMap.setMap(MiguHandle.miguMap.getMap());
-            marshaller.marshal(miguMap, new File("src/ru/artsok/resources/xml_state/test.xml"));
+            marshaller.marshal(miguMap, new File(patchResource + "xml_state/test.xml"));
         } catch (JAXBException e) {
             e.printStackTrace();
         }
@@ -56,7 +57,7 @@ public class ParserJaxbImpl implements ParserJaxb {
         try {
             context = JAXBContext.newInstance(MiguMap.class);
             Unmarshaller unmarshaller = context.createUnmarshaller();
-            miguMap = (MiguMap) unmarshaller.unmarshal(new File("src/ru/artsok/resources/xml_state/test.xml"));
+            miguMap = (MiguMap) unmarshaller.unmarshal(new File(patchResource + "xml_state/test.xml"));
             for (Migu migu : miguMap.getMap().values()) {
                 MiguHandle.miguMap.getMap().put(migu.getNumber(), migu.setViewItem());
 //                MiguHandle.miguMap.getMap().putAll(miguMap.getMap());

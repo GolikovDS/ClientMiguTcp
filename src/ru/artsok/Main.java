@@ -13,6 +13,8 @@ import java.util.Properties;
 
 import static ru.artsok.SettingMainController.*;
 
+//import java.io.FileInputStream;
+
 public class Main extends Application {
 
     private static Controller controller = new Controller();
@@ -21,9 +23,10 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         appIsLive = true;
+
         try {
             Properties properties = new Properties();
-            properties.load(new FileInputStream(patchProperties + "/panel_size.properties"));
+            properties.load(new FileInputStream(patchPropertiesPanelSize));
             settingPanelSize = Double.parseDouble(properties.getProperty("vertical"));
             journalPanelIsSize = Double.parseDouble(properties.getProperty("horizontal"));
             settingPanelIsClose = Boolean.parseBoolean(properties.getProperty("verticalClose"));
@@ -32,9 +35,8 @@ public class Main extends Application {
             btnShowTcp = Boolean.parseBoolean(properties.getProperty("btnTcp"));
             btnShowRs = Boolean.parseBoolean(properties.getProperty("btnRs"));
             btnShowJournal = Boolean.parseBoolean(properties.getProperty("btnJournal"));
-
-
         } catch (IOException e) {
+
             e.printStackTrace();
         }
 

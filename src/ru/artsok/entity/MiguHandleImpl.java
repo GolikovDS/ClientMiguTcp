@@ -6,13 +6,17 @@ import javafx.scene.control.TreeView;
 import ru.artsok.entity.interfaces.MiguHandle;
 import ru.artsok.util.Caster;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.*;
+import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Properties;
 import java.util.stream.Collectors;
 
 import static ru.artsok.SettingMainController.patchImage;
-import static ru.artsok.SettingMainController.patchProperties;
+import static ru.artsok.SettingMainController.*;
+
 
 public class MiguHandleImpl implements MiguHandle {
     class ErrorAndEventsImage {
@@ -120,12 +124,12 @@ public class MiguHandleImpl implements MiguHandle {
         return new Caster().bytesToFloat(new byte[]{bytes[numberStartByte], bytes[numberStartByte + 1],
                 bytes[numberStartByte + 2], bytes[numberStartByte + 3]});
     }
-
+//    Main.class.getResourceAsStream("resources/properties/error_and_event_from_migu.properties")
 
     public ErrorAndEventsImage getErrOrEvent(byte[] bytes) {
         Properties properties1 = new Properties();
         try {
-            properties1.load(new FileInputStream(patchProperties + "error_and_event_from_migu.properties"));
+            properties1.load(new FileInputStream(patchPropertiesErrorAndEvent));
         } catch (IOException e) {
             e.printStackTrace();
         }

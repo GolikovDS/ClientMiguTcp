@@ -41,6 +41,12 @@ import java.util.*;
 
 import static ru.artsok.SettingMainController.*;
 
+//import java.io.FileInputStream;
+
+//import java.io.FileOutputStream;
+//import static ru.artsok.SettingMainController.*;
+
+
 public class Controller implements Initializable, EventHandler<WindowEvent>, SerialPortMigu.UpdateDataCallBack {
 
 
@@ -224,7 +230,7 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
             cbSeriatPortStopBit.setItems(FXCollections.observableArrayList(Arrays.asList("1", "1.5", "2")));
 
             Properties properties = new Properties();
-            properties.load(new FileInputStream(patchProperties + "/serial_port.properties"));
+            properties.load(new FileInputStream(patchPropertiesSerialPort));
             cbSeriatPortNames.getSelectionModel().select(Integer.parseInt(properties.getProperty("port")));
             cbSeriatPortBitData.getSelectionModel().select(Integer.parseInt(properties.getProperty("dataBit")));
             cbSeriatPortBitInSekond.getSelectionModel().select(Integer.parseInt(properties.getProperty("speed")));
@@ -282,9 +288,7 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
-
-////////////////////////////////////////////////////////////////////////////////////
-
+//////////////////////////////////////////////////////////////////////////////////
 
         closeLeftPanel(1);
         onChangeValueViewBtn(new ActionEvent());
@@ -323,11 +327,10 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
                 properties.setProperty("btnTcp", String.valueOf(btnShowTcp));
                 properties.setProperty("btnJournal", String.valueOf(btnShowJournal));
 
-                properties.store(new FileOutputStream(patchProperties + "panel_size.properties"), null);
+                properties.store(new FileOutputStream(patchPropertiesPanelSize), null);
 //                checkAvtoSerialPortOnAction();
-
-
             } catch (IOException e) {
+
                 e.printStackTrace();
             }
         }
@@ -562,8 +565,7 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
             properties.setProperty("autoStartTCP", String.valueOf(cbAutoTcpConnect.isSelected()));
             properties.setProperty("nameTcpServer", String.valueOf(tbNameTcpServer.getText()));
 
-
-            properties.store(new FileOutputStream(patchProperties + "serial_port.properties"), null);
+            properties.store(new FileOutputStream(patchPropertiesSerialPort), null);
         } catch (IOException e) {
             e.printStackTrace();
         }
