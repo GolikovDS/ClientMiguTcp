@@ -4,14 +4,16 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import ru.artsok.controller.Controller;
 
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Properties;
 
 import static ru.artsok.SettingMainController.*;
+
+//import static ru.artsok.SettingMainController.*;
 
 //import java.io.FileInputStream;
 
@@ -23,7 +25,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         appIsLive = true;
-
+        Alert alert = new Alert(Alert.AlertType.WARNING);
         try {
             Properties properties = new Properties();
             properties.load(new FileInputStream(patchPropertiesPanelSize));
@@ -35,12 +37,11 @@ public class Main extends Application {
             btnShowTcp = Boolean.parseBoolean(properties.getProperty("btnTcp"));
             btnShowRs = Boolean.parseBoolean(properties.getProperty("btnRs"));
             btnShowJournal = Boolean.parseBoolean(properties.getProperty("btnJournal"));
-        } catch (IOException e) {
 
-            e.printStackTrace();
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-
-
         Parent root = FXMLLoader.load(getClass().getResource("view/mainForm.fxml"));
         primaryStage.setTitle("МИЖУ");
         primaryStage.setScene(new Scene(root, 1200, 600));

@@ -6,8 +6,8 @@ import javafx.scene.control.TreeView;
 import ru.artsok.entity.interfaces.MiguHandle;
 import ru.artsok.util.Caster;
 
-import java.io.IOException;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,7 +15,10 @@ import java.util.Properties;
 import java.util.stream.Collectors;
 
 import static ru.artsok.SettingMainController.patchImage;
-import static ru.artsok.SettingMainController.*;
+import static ru.artsok.SettingMainController.patchPropertiesErrorAndEvent;
+
+//import static ru.artsok.SettingMainController.*;
+//import java.io.FileInputStream;
 
 
 public class MiguHandleImpl implements MiguHandle {
@@ -127,15 +130,15 @@ public class MiguHandleImpl implements MiguHandle {
 //    Main.class.getResourceAsStream("resources/properties/error_and_event_from_migu.properties")
 
     public ErrorAndEventsImage getErrOrEvent(byte[] bytes) {
-        Properties properties1 = new Properties();
+        Properties properties = new Properties();
         try {
-            properties1.load(new FileInputStream(patchPropertiesErrorAndEvent));
+            properties.load(new FileInputStream(patchPropertiesErrorAndEvent));
         } catch (IOException e) {
             e.printStackTrace();
         }
         List<Integer> lists = getErrOrEvent0(bytes);
         List<String> stringList = new ArrayList<>();
-        stringList.addAll(lists.stream().map(integer -> String.format("E%03d \t", integer) + properties1.getProperty(integer.toString())).collect(Collectors.toList()));
+        stringList.addAll(lists.stream().map(integer -> String.format("E%03d \t", integer) + properties.getProperty(integer.toString())).collect(Collectors.toList()));
 
         return new ErrorAndEventsImage(getErrOrEventImage(lists), stringList);
     }

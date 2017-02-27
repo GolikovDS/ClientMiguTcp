@@ -237,12 +237,15 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
             cbSeriatPortChetnost.getSelectionModel().select(Integer.parseInt(properties.getProperty("parity")));
             cbSeriatPortStopBit.getSelectionModel().select(Integer.parseInt(properties.getProperty("stopBit")));
             checkAvtoSerialPort.setSelected(Boolean.parseBoolean(properties.getProperty("autoStartPort")));
+
             ////////////////////////////////////////
             //TCP
             ////////////////////////////////////////"192.168.55.145"
 
             tbNameTcpServer.setText(properties.getProperty("nameTcpServer"));
             cbAutoTcpConnect.setSelected(Boolean.parseBoolean(properties.getProperty("autoStartTCP")));
+
+
             ////////////////////////////////////////
         } catch (Exception e) {
             e.printStackTrace();
@@ -328,7 +331,7 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
                 properties.setProperty("btnJournal", String.valueOf(btnShowJournal));
 
                 properties.store(new FileOutputStream(patchPropertiesPanelSize), null);
-//                checkAvtoSerialPortOnAction();
+
             } catch (IOException e) {
 
                 e.printStackTrace();
@@ -415,8 +418,8 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
 ///////////////////////////////////////////////////////////////////////////////////////
 
     public void onClickCloseJournal(ActionEvent actionEvent) { //кнопка панели
-        journalPanelIsSize = spGorizont.getDividerPositions()[0];
-        journalPanelIsClose = true;
+//        journalPanelIsSize = spGorizont.getDividerPositions()[0];
+//        journalPanelIsClose = true;
         spGorizont.setDividerPosition(0, 1);
 
     }
@@ -566,6 +569,8 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
             properties.setProperty("nameTcpServer", String.valueOf(tbNameTcpServer.getText()));
 
             properties.store(new FileOutputStream(patchPropertiesSerialPort), null);
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -580,13 +585,13 @@ public class Controller implements Initializable, EventHandler<WindowEvent>, Ser
 
     @Override
     public void callIsFreshMigu() {
-//        for(Migu migu: MiguHandle.miguMap.getMap().values()){
-//            migu.getStates().isMiguIsRespond();
-//
-//            TreeItem treeItem = rootMigu.getChildren().get(1);
-//            treeItem.setGraphic(new ImageView(new Image("ru/artsok/resources/icon/x.png")));
-//            treeMigu.refresh();
-//        }
+        for (Migu migu : MiguHandle.miguMap.getMap().values()) {
+            migu.getStates().isMiguIsRespond();
+
+            TreeItem treeItem = rootMigu.getChildren().get(1);
+            treeItem.setGraphic(new ImageView(new Image("ru/artsok/resources/icon/x.png")));
+            treeMigu.refresh();
+        }
     }
 
     public void terminalOutput(List<Byte> bytes) {

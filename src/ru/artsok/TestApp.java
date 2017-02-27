@@ -1,42 +1,34 @@
 package ru.artsok;
 
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 
 public class TestApp {
 
     public static void main(String[] args) throws IOException, URISyntaxException {
-
-    }
-
-    public String pathhh(){
-        return getClass().getResource("resources/properties/panel_size.properties").toString();
-    }
-
-    private String loadText() {
-        StringBuilder sb = new StringBuilder();
+//        Properties properties = new Properties();
         try {
-            FileInputStream fileInputStream = (FileInputStream) getClass().getResourceAsStream("resources/properties/panel_size.properties");
-            InputStream is = getClass().getResourceAsStream("resources/properties/panel_size.properties");
-            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-            BufferedReader br = new BufferedReader(new InputStreamReader(is, "Cp1251"));
-            while (true) {
-                String line = br.readLine();
-                if (line == null)
-                    break;
-                sb.append(line).append("\n");
-            }
-        } catch (IOException ex) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            ex.printStackTrace(pw);
-            pw.flush();
-            pw.close();
-            sb.append("Error while loading text: ").append("\n\n");
-            sb.append(sw.getBuffer().toString());
+//            properties.load(TestApp.class.getResourceAsStream("resources/properties/panel_size.properties"));
+//            System.out.println(properties.getProperty("btnRs"));
+//            System.out.println(properties.getProperty("ddd"));
+            System.out.println("12");
+            File file = new File("P:\\Разное\\Программирование\\Spring\\ClientMiguTcp.V2\\src\\ru\\artsok\\tester.txt");
+            System.out.println(file.toString());
+            if(file.createNewFile())
+                System.out.println("Ok");
+//            properties.setProperty("ddd", String.valueOf(System.nanoTime()));
+//            properties.store(new FileOutputStream("src/ru/artsok/resources/properties/panel_size.properties"), null);
+//            properties.store(new FileOutputStream(TestApp.class.getResourceAsStream("resources/properties/panel_size.properties").toString()), null);
+
+//            System.out.println(Main.class.getResource("resources/properties/panel_size.properties").getFile());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return sb.toString();
+
     }
+
+
 }
 //P:\Разное\Программирование\Spring\ClientMiguTcp.V2\src\ru\artsok\resources\properties\panel_size.properties

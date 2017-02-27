@@ -63,7 +63,6 @@ public class Migu {
         imageView.setFitWidth(15);
         TreeItem<String> item = new TreeItem<>("МИЖУ зав. № " + number, imageView);
         item.getChildren().add(new TreeItem<>("Адрес: " +address));
-        item.getChildren().add(new TreeItem<>("Тип: " + type));
         item.getChildren().add(new TreeItem<>("Примечание: " + node));
         return item;
     }
